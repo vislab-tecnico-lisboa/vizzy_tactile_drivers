@@ -22,6 +22,9 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
   for(auto sensor: msg->sensorsArray)
   {
 
+    std::stringstream ss;
+    ss << i;
+    outmsg.sensorArray[i].frame_id = ss.str();
 
 
     //CODIGO PARA CALCULAR FORCA E CAMPO
@@ -33,10 +36,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
 
 
-    std::stringstream ss;
-    ss << i;
-    outmsg.sensorArray[i].frame_id = ss.str();
-
+    //SUBSTITUIR ZERO PELOS VALORES REAIS
     outmsg.sensorArray[i].force.x = 0;
     outmsg.sensorArray[i].force.y = 0;
     outmsg.sensorArray[i].force.z = 0;
@@ -48,6 +48,8 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
     i++;
   }
+
+  pub.publish(outmsg);
 
 
 }
