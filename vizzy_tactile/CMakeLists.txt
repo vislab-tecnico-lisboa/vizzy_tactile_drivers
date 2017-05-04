@@ -54,6 +54,8 @@ add_message_files(FILES
                   TopicInfo.msg
   		  TacVector.msg
   		  Tactile.msg
+		  TactSensor.msg
+	 	  TactSensorArray.msg
                  )
 
 add_service_files(FILES
@@ -135,6 +137,7 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(vizzy_tactile_driver src/vizzy_tactile.cpp)
+add_executable(tactileComputationalNode src/tactileComputationalNode.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -142,6 +145,10 @@ add_executable(vizzy_tactile_driver src/vizzy_tactile.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vizzy_tactile_driver
+   ${catkin_LIBRARIES}
+ )
+
+target_link_libraries(tactileComputationalNode
    ${catkin_LIBRARIES}
  )
 
