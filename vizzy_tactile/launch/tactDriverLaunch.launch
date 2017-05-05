@@ -1,8 +1,10 @@
 <launch>
+  <arg name="device" default="/dev/ttyUSB0" />
+  <arg name="baudrate" default="115200"/>
 
-<node name="tactDriver" pkg="vizzy_tactile" type="serial_node.py" output="screen" args="/dev/ttyUSB1">
-<param name="baud" type="str" value="115200" />
-</node>
+  <node name="tactDriver" pkg="vizzy_tactile" type="serial_node.py" output="screen" args="$(arg device)">
+    <param name="baud" type="str" value="$(arg baudrate)" />
+  </node>
 
 <node name="tactComputer" pkg="vizzy_tactile" type="tactileComputationalNode" output="screen">
 </node>

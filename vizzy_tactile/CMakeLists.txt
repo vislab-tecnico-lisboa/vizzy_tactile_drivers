@@ -143,6 +143,8 @@ add_executable(tactileComputationalNode src/tactileComputationalNode.cpp)
 ## same as for the library above
 # add_dependencies(vizzy_expressions_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+add_dependencies(tactileComputationalNode vizzy_tactile_driver_generate_messages_cpp)
+
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vizzy_tactile_driver
    ${catkin_LIBRARIES}

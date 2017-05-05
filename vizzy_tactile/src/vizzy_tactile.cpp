@@ -1,3 +1,13 @@
+
+/*This is a ROS node to read from the serial port a publish to a topic
+*
+* The ROS Serial Arduino solution seems to be faster, so this is not being used at the moment
+*
+*
+*/
+
+
+
 #include <iostream>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
