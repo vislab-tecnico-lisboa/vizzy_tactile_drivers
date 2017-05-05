@@ -36,6 +36,13 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
   //For each sensor
   int i=0;
+  int x,y,z;                    // Received values
+  float Bx,By,Bz;               // Magnetic Field [Oe]
+  //float pos_x, pos_y, pos_z;    // Magnet Position Relative to the Sensor [mm]
+  //float pos_x0, pos_y0, pos_z0; // Initial magnet positions [mm]
+  //float dx, dy, dz;             // Magnet displacements [mm]
+  //float Fx, Fy, Fz;             // Force [N]
+
   for(auto sensor: msg->sensorsArray)
   {
 
@@ -51,6 +58,9 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
    // ROS_ERROR_STREAM(sensor.y);
    // ROS_ERROR_STREAM(sensor.z);
 
+    Bx = sensor.x*0.161*0.01;
+    By = sensor.y*0.161*0.01;
+    Bz = sensor.z*0.294*0.01;
 
 
 
@@ -60,9 +70,9 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     outmsg.sensorArray[i].force.z = 0;
 
 
-    outmsg.sensorArray[i].field.x = 0;
-    outmsg.sensorArray[i].field.y = 0;
-    outmsg.sensorArray[i].field.z = 0;
+    outmsg.sensorArray[i].field.x = Bx;
+    outmsg.sensorArray[i].field.y = By;
+    outmsg.sensorArray[i].field.z = Bz;
 
 
     i++;
