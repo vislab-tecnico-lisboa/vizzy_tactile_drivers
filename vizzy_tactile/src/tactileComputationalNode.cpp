@@ -112,10 +112,11 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     marker.scale.x = 1.0; //Grossura da seta
     marker.scale.y = 1.0; //Isto é a grossura da seta...
 
-
-    marker.scale.z = 1.0; //Vector magnitude
-
+    //Vector magnitude
+    marker.scale.z = sqrt(outmsg.sensorArray[i].force.x*outmsg.sensorArray[i].force.x+outmsg.sensorArray[i].force.y*outmsg.sensorArray[i].force.y+outmsg.sensorArray[i].force.z*outmsg.sensorArray[i].force.z);
     marker.pose.orientation.w = 1.0;
+
+    marker_pub.publish(marker);
 
     i++;
 
@@ -141,6 +142,8 @@ int main(int argc, char **argv)
   marker_pub = nh.advertise<visualization_msgs::Marker>("tactileForceMarker", 1);
 
   nPriv.param<std::string>("hand", hand, "right");
+
+
 
   ros::spin();
 
