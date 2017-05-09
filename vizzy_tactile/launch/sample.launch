@@ -4,17 +4,11 @@
   <arg name="run_rviz" default="true" />
   <arg name="sensor_frame_id" default="/tactile_right_0"/>
 
-  <arg name="rvizconfig" default="$(find vizzy_tactile_drivers)/rviz/sample.rviz" />
-
-  <include file="$(find vizzy_tactile_drivers)/launch/tactDriverLaunch.launch">
-    <arg name="device" value="$(arg device)" />
-    <arg name="baudrate" value="$(arg baudrate)" />
-<!--    <arg name="sensor_frame_id" value="$(arg sensor_frame_id)" /> Not used yet-->
-  </include>
+  <arg name="rvizconfig" default="$(find vizzy_tactile)/rviz/sample.rviz" />
 
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rvizconfig)" /> 
   
-  <param name="robot_description" command="$(find xacro)/xacro '$(find vizzy_tactile_drivers)/urdf/tactSensor.xacro' sensor_frame_id:=$(arg sensor_frame_id)" />
+  <param name="robot_description" command="$(find xacro)/xacro '$(find vizzy_tactile)/urdf/draft_tactile.xacro' sensor_frame_id:=$(arg sensor_frame_id)" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
 </launch>

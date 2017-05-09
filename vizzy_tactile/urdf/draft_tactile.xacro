@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+
+<!-- Dummy file just to view a kind of a hand! -->
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="WEF-6A200">
+  <xacro:arg name="sensor_frame_id" default="tactile_right"/>
+  <xacro:include filename="$(find vizzy_tactile)/urdf/draft_tactile_macro.xacro"/>
+
+  <link name="world"/>
+  <!-- <link name="polegar"/> -->
+
+ <!--
+  <joint name="polegar_link" type="continuous">
+    <parent link="world"/>
+    <child link="polegar"/>
+    <axis xyz="0 0 0.3" rpy="0 0 0.785"/>
+    <origin xyz="0 0 0.3" rpy="0 0 0.785"/>
+  </joint> -->
+
+
+<!-- Polegar -->
+  <xacro:dynpick prefix="right_1" parent="world" sensor_frame_id="$(arg sensor_frame_id)_1">
+    <origin xyz="0.11 0.24 0" rpy="0 -1.046 0" />
+  </xacro:dynpick>
+  <xacro:dynpick prefix="right_2" parent="world" sensor_frame_id="$(arg sensor_frame_id)_2">
+    <origin xyz="0.09 0.16 0" rpy="0 -1.046 0" />
+  </xacro:dynpick>
+  <xacro:dynpick prefix="right_3" parent="world" sensor_frame_id="$(arg sensor_frame_id)_3">
+    <origin xyz="0.07 0.08 0" rpy="0 -1.046 0" />
+  </xacro:dynpick>
+  <xacro:dynpick prefix="right_4" parent="world" sensor_frame_id="$(arg sensor_frame_id)_4">
+    <origin xyz="0.05 0.0 0" rpy="0 -1.046 0" />
+  </xacro:dynpick>
+
+<!-- Indicador -->
+
+<xacro:dynpick prefix="right_5" parent="world" sensor_frame_id="$(arg sensor_frame_id)_5">
+  <origin xyz="-0.1 0.53 0" rpy="0 0 0" />
+</xacro:dynpick>
+<xacro:dynpick prefix="right_6" parent="world" sensor_frame_id="$(arg sensor_frame_id)_6">
+  <origin xyz="-0.1 0.43 0" rpy="0 0 0" />
+</xacro:dynpick>
+<xacro:dynpick prefix="right_7" parent="world" sensor_frame_id="$(arg sensor_frame_id)_7">
+  <origin xyz="-0.1 0.33 0" rpy="0 0 0" />
+</xacro:dynpick>
+<xacro:dynpick prefix="right_8" parent="world" sensor_frame_id="$(arg sensor_frame_id)_8">
+  <origin xyz="-0.1 0.23 0" rpy="0 0 0" />
+</xacro:dynpick>
+
+
+
+<!-- Medio -->
+
+<xacro:dynpick prefix="right_9" parent="world" sensor_frame_id="$(arg sensor_frame_id)_9">
+  <origin xyz="-0.25 0.59 0" rpy="0 0 0" />
+</xacro:dynpick>
+<xacro:dynpick prefix="right_10" parent="world" sensor_frame_id="$(arg sensor_frame_id)_10">
+  <origin xyz="-0.25 0.46 0" rpy="0 0 0" />
+</xacro:dynpick>
+<xacro:dynpick prefix="right_11" parent="world" sensor_frame_id="$(arg sensor_frame_id)_11">
+  <origin xyz="-0.25 0.33 0" rpy="0 0 0" />
+</xacro:dynpick>
+<xacro:dynpick prefix="right_12" parent="world" sensor_frame_id="$(arg sensor_frame_id)_12">
+  <origin xyz="-0.25 0.20 0" rpy="0 0 0" />
+</xacro:dynpick>
+
+
+<!-- Anelar -->
+
+<xacro:dynpick prefix="right_13" parent="world" sensor_frame_id="$(arg sensor_frame_id)_13">
+  <origin xyz="-0.4 0.50 0" rpy="0 0 0" />
+</xacro:dynpick>
+<xacro:dynpick prefix="right_14" parent="world" sensor_frame_id="$(arg sensor_frame_id)_14">
+  <origin xyz="-0.4 0.40 0" rpy="0 0 0" />
+</xacro:dynpick>
+<xacro:dynpick prefix="right_15" parent="world" sensor_frame_id="$(arg sensor_frame_id)_15">
+  <origin xyz="-0.4 0.30 0" rpy="0 0 0" />
+</xacro:dynpick>
+<xacro:dynpick prefix="right_16" parent="world" sensor_frame_id="$(arg sensor_frame_id)_16">
+  <origin xyz="-0.4 0.20 0" rpy="0 0 0" />
+</xacro:dynpick>
+
+
+</robot>
+
