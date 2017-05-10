@@ -395,10 +395,10 @@ Visualization Manager:
       Focal Shape Size: 0.05000000074505806
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.3047959804534912
+      Pitch: 1.2747961282730103
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.748578071594238
+      Yaw: 4.938581943511963
     Saved: ~
 Window Geometry:
   Displays:
@@ -416,5 +416,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1200
-  X: 368
-  Y: 27
+  X: 251
+  Y: 185
