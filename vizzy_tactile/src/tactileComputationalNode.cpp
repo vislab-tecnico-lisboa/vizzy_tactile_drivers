@@ -99,6 +99,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     }
 
     q.normalize();
+    ROS_ERROR_STREAM( "lol q:" << q);
 
     geometry_msgs::Quaternion force_orientation;
     tf::quaternionTFToMsg(q, force_orientation);
@@ -108,13 +109,14 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     marker.pose.position.z = 0;
     marker.pose.orientation = force_orientation;
 
+    ROS_ERROR_STREAM( "lol nan" << force_orientation);
+
 
     marker.scale.x = 1.0; //Grossura da seta
     marker.scale.y = 1.0; //Isto é a grossura da seta...
 
     //Vector magnitude
     marker.scale.z = sqrt(outmsg.sensorArray[i].force.x*outmsg.sensorArray[i].force.x+outmsg.sensorArray[i].force.y*outmsg.sensorArray[i].force.y+outmsg.sensorArray[i].force.z*outmsg.sensorArray[i].force.z);
-    marker.pose.orientation.w = 1.0;
 
     marker_pub.publish(marker);
 
