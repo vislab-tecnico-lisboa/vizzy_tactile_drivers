@@ -11,4 +11,14 @@
   <param name="robot_description" command="$(find xacro)/xacro '$(find vizzy_tactile)/urdf/draft_tactile.xacro' sensor_frame_id:=$(arg sensor_frame_id)" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
+<node name="tactDriverRightHand" pkg="vizzy_tactile" type="serial_node.py" output="screen" args="$(arg device)">
+<param name="baud" type="str" value="$(arg baudrate)" />
+<remap from="/tactile" to="/tactile_driver_right"/>
+</node>
+
+<node name="tactComputerRightHand" pkg="vizzy_tactile" type="tactileComputationalNode" output="screen">
+<param name="hand" type="str" value="right" />
+<remap from="/tactile" to="/tactile_driver_right"/>
+</node>
+
 </launch>

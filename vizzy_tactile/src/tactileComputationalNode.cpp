@@ -52,7 +52,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
     std::stringstream ss;
 
-    ss << "/tactile_" << hand << "_" << i;
+    ss << hand << "_" << i << "/tactile_" << hand << "_0_" << i;
     outmsg.sensorArray[i].frame_id = ss.str();
 
 
@@ -66,9 +66,9 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
 
     //SUBSTITUIR ZERO PELOS VALORES REAIS
-    outmsg.sensorArray[i].force.x = 0;
-    outmsg.sensorArray[i].force.y = 0;
-    outmsg.sensorArray[i].force.z = 0;
+    outmsg.sensorArray[i].force.x = Bx;
+    outmsg.sensorArray[i].force.y = By;
+    outmsg.sensorArray[i].force.z = Bz;
 
 
     outmsg.sensorArray[i].field.x = Bx;

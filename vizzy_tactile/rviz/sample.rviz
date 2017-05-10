@@ -1,14 +1,17 @@
 Panels:
   - Class: rviz/Displays
-    Help Height: 78
+    Help Height: 70
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /Global Options1
         - /Status1
         - /RobotModel1
+        - /Marker1
+        - /TF1
+        - /TF1/Frames1
       Splitter Ratio: 0.5
-    Tree Height: 558
+    Tree Height: 566
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -357,6 +360,254 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /tactileForceMarker
+      Name: Marker
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        right_1/tactile_right_0_1:
+          Value: true
+        right_10/tactile_right_0_10:
+          Value: true
+        right_10fts_body:
+          Value: true
+        right_10fts_tool_mount:
+          Value: true
+        right_10fts_upper:
+          Value: true
+        right_11/tactile_right_0_11:
+          Value: true
+        right_11fts_body:
+          Value: true
+        right_11fts_tool_mount:
+          Value: true
+        right_11fts_upper:
+          Value: true
+        right_12/tactile_right_0_12:
+          Value: true
+        right_12fts_body:
+          Value: true
+        right_12fts_tool_mount:
+          Value: true
+        right_12fts_upper:
+          Value: true
+        right_13/tactile_right_0_13:
+          Value: true
+        right_13fts_body:
+          Value: true
+        right_13fts_tool_mount:
+          Value: true
+        right_13fts_upper:
+          Value: true
+        right_14/tactile_right_0_14:
+          Value: true
+        right_14fts_body:
+          Value: true
+        right_14fts_tool_mount:
+          Value: true
+        right_14fts_upper:
+          Value: true
+        right_15/tactile_right_0_15:
+          Value: true
+        right_15fts_body:
+          Value: true
+        right_15fts_tool_mount:
+          Value: true
+        right_15fts_upper:
+          Value: true
+        right_16/tactile_right_0_16:
+          Value: true
+        right_16fts_body:
+          Value: true
+        right_16fts_tool_mount:
+          Value: true
+        right_16fts_upper:
+          Value: true
+        right_1fts_body:
+          Value: true
+        right_1fts_tool_mount:
+          Value: true
+        right_1fts_upper:
+          Value: true
+        right_2/tactile_right_0_2:
+          Value: true
+        right_2fts_body:
+          Value: true
+        right_2fts_tool_mount:
+          Value: true
+        right_2fts_upper:
+          Value: true
+        right_3/tactile_right_0_3:
+          Value: true
+        right_3fts_body:
+          Value: true
+        right_3fts_tool_mount:
+          Value: true
+        right_3fts_upper:
+          Value: true
+        right_4/tactile_right_0_4:
+          Value: true
+        right_4fts_body:
+          Value: true
+        right_4fts_tool_mount:
+          Value: true
+        right_4fts_upper:
+          Value: true
+        right_5/tactile_right_0_5:
+          Value: true
+        right_5fts_body:
+          Value: true
+        right_5fts_tool_mount:
+          Value: true
+        right_5fts_upper:
+          Value: true
+        right_6/tactile_right_0_6:
+          Value: true
+        right_6fts_body:
+          Value: true
+        right_6fts_tool_mount:
+          Value: true
+        right_6fts_upper:
+          Value: true
+        right_7/tactile_right_0_7:
+          Value: true
+        right_7fts_body:
+          Value: true
+        right_7fts_tool_mount:
+          Value: true
+        right_7fts_upper:
+          Value: true
+        right_8/tactile_right_0_8:
+          Value: true
+        right_8fts_body:
+          Value: true
+        right_8fts_tool_mount:
+          Value: true
+        right_8fts_upper:
+          Value: true
+        right_9/tactile_right_0_9:
+          Value: true
+        right_9fts_body:
+          Value: true
+        right_9fts_tool_mount:
+          Value: true
+        right_9fts_upper:
+          Value: true
+        world:
+          Value: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        world:
+          right_10fts_upper:
+            right_10fts_body:
+              right_10/tactile_right_0_10:
+                {}
+              right_10fts_tool_mount:
+                {}
+          right_11fts_upper:
+            right_11fts_body:
+              right_11/tactile_right_0_11:
+                {}
+              right_11fts_tool_mount:
+                {}
+          right_12fts_upper:
+            right_12fts_body:
+              right_12/tactile_right_0_12:
+                {}
+              right_12fts_tool_mount:
+                {}
+          right_13fts_upper:
+            right_13fts_body:
+              right_13/tactile_right_0_13:
+                {}
+              right_13fts_tool_mount:
+                {}
+          right_14fts_upper:
+            right_14fts_body:
+              right_14/tactile_right_0_14:
+                {}
+              right_14fts_tool_mount:
+                {}
+          right_15fts_upper:
+            right_15fts_body:
+              right_15/tactile_right_0_15:
+                {}
+              right_15fts_tool_mount:
+                {}
+          right_16fts_upper:
+            right_16fts_body:
+              right_16/tactile_right_0_16:
+                {}
+              right_16fts_tool_mount:
+                {}
+          right_1fts_upper:
+            right_1fts_body:
+              right_1/tactile_right_0_1:
+                {}
+              right_1fts_tool_mount:
+                {}
+          right_2fts_upper:
+            right_2fts_body:
+              right_2/tactile_right_0_2:
+                {}
+              right_2fts_tool_mount:
+                {}
+          right_3fts_upper:
+            right_3fts_body:
+              right_3/tactile_right_0_3:
+                {}
+              right_3fts_tool_mount:
+                {}
+          right_4fts_upper:
+            right_4fts_body:
+              right_4/tactile_right_0_4:
+                {}
+              right_4fts_tool_mount:
+                {}
+          right_5fts_upper:
+            right_5fts_body:
+              right_5/tactile_right_0_5:
+                {}
+              right_5fts_tool_mount:
+                {}
+          right_6fts_upper:
+            right_6fts_body:
+              right_6/tactile_right_0_6:
+                {}
+              right_6fts_tool_mount:
+                {}
+          right_7fts_upper:
+            right_7fts_body:
+              right_7/tactile_right_0_7:
+                {}
+              right_7fts_tool_mount:
+                {}
+          right_8fts_upper:
+            right_8fts_body:
+              right_8/tactile_right_0_8:
+                {}
+              right_8fts_tool_mount:
+                {}
+          right_9fts_upper:
+            right_9fts_body:
+              right_9/tactile_right_0_9:
+                {}
+              right_9fts_tool_mount:
+                {}
+      Update Interval: 0
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -395,10 +646,10 @@ Visualization Manager:
       Focal Shape Size: 0.05000000074505806
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.2747961282730103
+      Pitch: 1.1097962856292725
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.938581943511963
+      Yaw: 4.6885762214660645
     Saved: ~
 Window Geometry:
   Displays:
@@ -406,7 +657,7 @@ Window Geometry:
   Height: 846
   Hide Left Dock: false
   Hide Right Dock: true
-  QMainWindow State: 000000ff00000000fd000000040000000000000156000002b6fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003a000002b6000000c600fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f000002b6fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003a000002b60000009e00fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004b00000003efc0100000002fb0000000800540069006d00650100000000000004b00000024400fffffffb0000000800540069006d0065010000000000000450000000000000000000000354000002b600000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001de000002b6fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003a000002b6000000c600fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f000002b6fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003a000002b60000009e00fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004b00000003efc0100000002fb0000000800540069006d00650100000000000004b00000024400fffffffb0000000800540069006d00650100000000000004500000000000000000000002cc000002b600000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -417,4 +668,4 @@ Window Geometry:
     collapsed: true
   Width: 1200
   X: 251
-  Y: 185
+  Y: 111
