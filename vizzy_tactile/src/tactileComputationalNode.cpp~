@@ -88,6 +88,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 	pos_x0[i] /= 10;
         pos_y0[i] /= 10;
         pos_z0[i] /= 10;
+	countMeasures++;
     }
 
 
