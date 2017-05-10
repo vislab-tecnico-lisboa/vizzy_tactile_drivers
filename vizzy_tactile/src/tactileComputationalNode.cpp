@@ -43,10 +43,11 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
   int i=0;
   //int x,y,z;                    // Received values
   float Bx,By,Bz;               // Magnetic Field [Oe]
-  //float pos_x, pos_y, pos_z;    // Magnet Position Relative to the Sensor [mm]
-  //float pos_x0, pos_y0, pos_z0; // Initial magnet positions [mm]
-  //float dx, dy, dz;             // Magnet displacements [mm]
-  //float Fx, Fy, Fz;             // Force [N]
+  float pos_x, pos_y, pos_z;    // Magnet Position Relative to the Sensor [mm]
+  float pos_x0, pos_y0, pos_z0; // Initial magnet positions [mm]
+  float dx, dy, dz;             // Magnet displacements [mm]
+  float Fx, Fy, Fz;             // Force [N]
+  pos_x0=0; pos_y0=0; pos_z0=4;
 
   for(auto sensor: msg->sensorsArray)
   {
@@ -59,17 +60,30 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
     //CODIGO PARA CALCULAR FORCA E CAMPO
 
-
+    //Convert to Fields
     Bx = sensor.x*0.161*0.01;
     By = sensor.y*0.161*0.01;
     Bz = sensor.z*0.294*0.01;
 
+    //Convert to Displacements
+    pos_x=Bx*0.25;
+    pos_y=By*0.25;
+    pos_z=-Bz*0.02+4;
+
+    dx = pos_x - pos_x0;
+    dy = pos_y - pos_y0;
+    dz = pos_z - pos_z0;
+
+    //Convert to Force
+    Fx=dx*(3+0.7*dz);
+    Fy=dy*(3+0.7*dz);
+    Fz=(2.231*dz*dz+3.111*abs(dz))*(1-dy*dy*0.1)*(1-dx*dx*0.1);
 
 
     //SUBSTITUIR ZERO PELOS VALORES REAIS
-    outmsg.sensorArray[i].force.x = Bx;
-    outmsg.sensorArray[i].force.y = By;
-    outmsg.sensorArray[i].force.z = Bz;
+    outmsg.sensorArray[i].force.x = Fx;
+    outmsg.sensorArray[i].force.y = Fy;
+    outmsg.sensorArray[i].force.z = Fz;
 
 
     outmsg.sensorArray[i].field.x = Bx;
@@ -87,7 +101,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     tf::Vector3 axis_vector(outmsg.sensorArray[i].force.x, outmsg.sensorArray[i].force.y , outmsg.sensorArray[i].force.z);
 
     ROS_ERROR_STREAM("AXIS_VECTOR: " << "x: " << axis_vector.getX() << ", y= " << axis_vector.getX() << ", z= " <<  axis_vector.getZ());
- 
+
 
 
     axis_vector.normalize();
