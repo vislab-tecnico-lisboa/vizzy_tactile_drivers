@@ -1,3 +1,4 @@
+
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "vizzy_tactile/TacVector.h"
@@ -52,7 +53,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
     std::stringstream ss;
 
-    ss << hand << "_" << i << "/tactile_" << hand << "_0_" << i;
+    ss << hand << "_" << i+1 << "/tactile_" << hand << "_0_" << i+1;
     outmsg.sensorArray[i].frame_id = ss.str();
 
 
@@ -84,9 +85,18 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
 
     tf::Vector3 axis_vector(outmsg.sensorArray[i].force.x, outmsg.sensorArray[i].force.y , outmsg.sensorArray[i].force.z);
+
+    ROS_ERROR_STREAM("AXIS_VECTOR: " << "x: " << axis_vector.getX() << ", y= " << axis_vector.getX() << ", z= " <<  axis_vector.getZ());
+ 
+
+
+    axis_vector.normalize();
+
+    ROS_ERROR_STREAM("AXIS_VECTOR_NORM: " << "x: " << axis_vector.getX() << ", y= " << axis_vector.getX() << ", z= " <<  axis_vector.getZ());
+
     tf::Quaternion q;
 
-    if(axis_vector.dot(up_vector)>0.99)
+    if(axis_vector.dot(up_vector)>0.999999999999)
     {
       q=tf::createIdentityQuaternion();
     }
@@ -96,6 +106,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
       right_vector.normalized();
 
       q=tf::Quaternion(right_vector, -1.0*acos(axis_vector.dot(up_vector)));
+      ROS_ERROR_STREAM("Todo la dentro: " << q.getAxis());
     }
 
     q.normalize();
@@ -108,6 +119,11 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     marker.pose.position.y = 0;
     marker.pose.position.z = 0;
     marker.pose.orientation = force_orientation;
+
+    marker.color.a = 1.0; // Don't forget to set the alpha!
+    marker.color.r = 0.0;
+    marker.color.g = 1.0;
+    marker.color.b = 0.0;
 
     ROS_ERROR_STREAM( "lol nan" << force_orientation);
 
