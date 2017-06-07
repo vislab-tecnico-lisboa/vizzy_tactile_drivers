@@ -162,11 +162,13 @@ public:
 
     if(countMeasures <= 1)
     {
+      ROS_ERROR_STREAM("FIRST MEASURE: " << id);
       countMeasures++;
       return false;
     }
     if(countMeasures < 11 && countMeasures > 1)
     {
+      ROS_ERROR_STREAM("MORE THAN FIRST MEASURE: " << id);
       pos_x0 += pos_x;
       pos_y0 += pos_y;
       pos_z0 += pos_z;
@@ -174,11 +176,14 @@ public:
       return false;
     }else if(countMeasures == 11)
     {
+      ROS_ERROR_STREAM("LAST MEASURE: " << id);
       pos_x0 /= 9;
       pos_y0 /= 9;
       pos_z0 /= 9;
       countMeasures++;
     }
+
+    ROS_ERROR_STREAM("GOING TO RETURN TRUE: " << id);
 
     dx = pos_x - pos_x0;
     dy = pos_y - pos_y0;
@@ -319,6 +324,8 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
         Fy = sensItem.Fy;
         Fz = sensItem.Fz;
 
+        ROS_ERROR_STREAM("ENCONTREI SENSOR NA LISTA: " << sensor.id);
+
         exists = true;
         break;
       }
@@ -328,11 +335,15 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     {
       Sensor novoSensor(sensor.id);
       preCalibrationMade = novoSensor.computeForce(sensor.x, sensor.y, sensor.z);
+
+      ROS_ERROR_STREAM("NOVO SENSOR: " << sensor.id);
+
       Fx = novoSensor.Fx;
       Fy = novoSensor.Fy;
       Fz = novoSensor.Fz;
       sensorList.push_back(novoSensor);
     }
+
 
 
 
@@ -359,6 +370,8 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     sensorMSG.force.x = Fx;
     sensorMSG.force.y = Fy;
     sensorMSG.force.z = Fz;
+
+    ROS_ERROR_STREAM("frame_id: " << ss.str());
 
     outmsg.sensorArray.push_back(sensorMSG);
     //outmsg.sensorArray[i].frame_id = ss.str();
