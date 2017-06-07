@@ -328,9 +328,6 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     {
       Sensor novoSensor(sensor.id);
       preCalibrationMade = novoSensor.computeForce(sensor.x, sensor.y, sensor.z);
-      Fx = novoSensor.Fx;
-      Fy = novoSensor.Fy;
-      Fz = novoSensor.Fz;
       sensorList.push_back(novoSensor);
     }
 

@@ -116,7 +116,6 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-   INCLUDE_DIRS include
    LIBRARIES vizzy_tactile
    CATKIN_DEPENDS roscpp std_msgs message_runtime
    DEPENDS system_lib
@@ -131,9 +130,6 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}") #Default build mode is release
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-
-include_directories(include)
-include_directories(${catkin_INCLUDE_DIRS} ${Eigen_INCLUDE_DIRS})
 
 
 ## Declare a C++ executable
