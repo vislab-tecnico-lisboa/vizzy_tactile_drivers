@@ -1,2 +1,2 @@
 Header header
-TactSensor[16] sensorArray
+TactSensor[] sensorArray

@@ -8,8 +8,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  image_transport
   message_generation
-  geometry_msgs
 )
 
 catkin_python_setup()
@@ -62,6 +62,7 @@ add_service_files(FILES
                   RequestParam.srv
                   RequestMessageInfo.srv
                   RequestServiceInfo.srv
+		  SetNumSensors.srv
                  )
 
 generate_messages(
@@ -69,9 +70,6 @@ generate_messages(
   std_msgs
   geometry_msgs
 )
-catkin_package(INCLUDE_DIRS include
-		CATKIN_DEPENDS roscpp std_msgs message_runtime
-		DEPENDS system_lib)
 
 ## Generate messages in the 'msg' folder
 # add_message_files(
@@ -118,9 +116,10 @@ catkin_package(INCLUDE_DIRS include
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  LIBRARIES vizzy_expressions
-   CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
+   INCLUDE_DIRS include
+   LIBRARIES vizzy_tactile
+   CATKIN_DEPENDS roscpp std_msgs message_runtime
+   DEPENDS system_lib
 )
 
 ###########
@@ -132,29 +131,21 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}") #Default build mode is release
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-  ${catkin_INCLUDE_DIRS} include
-)
+
+include_directories(include)
+include_directories(${catkin_INCLUDE_DIRS} ${Eigen_INCLUDE_DIRS})
 
 
 ## Declare a C++ executable
 add_executable(vizzy_tactile_driver src/vizzy_tactile.cpp)
+target_link_libraries(vizzy_tactile_driver ${catkin_LIBRARIES})
+
+
 add_executable(tactileComputationalNode src/tactileComputationalNode.cpp)
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(vizzy_expressions_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
+target_link_libraries(tactileComputationalNode ${catkin_LIBRARIES})
 add_dependencies(tactileComputationalNode vizzy_tactile_generate_messages_cpp)
 
-## Specify libraries to link a library or executable target against
-target_link_libraries(vizzy_tactile_driver
-   ${catkin_LIBRARIES}
- )
 
-target_link_libraries(tactileComputationalNode
-   ${catkin_LIBRARIES}  
- )
 
 #############
 ## Install ##
