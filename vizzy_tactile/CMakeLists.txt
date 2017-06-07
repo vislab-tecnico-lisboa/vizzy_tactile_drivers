@@ -69,7 +69,9 @@ generate_messages(
   std_msgs
   geometry_msgs
 )
-catkin_package(CATKIN_DEPENDS message_runtime)
+catkin_package(INCLUDE_DIRS include
+		CATKIN_DEPENDS roscpp std_msgs message_runtime
+		DEPENDS system_lib)
 
 ## Generate messages in the 'msg' folder
 # add_message_files(
@@ -131,7 +133,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}") #Default build mode is release
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  ${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS} include
 )
 
 
@@ -143,7 +145,7 @@ add_executable(tactileComputationalNode src/tactileComputationalNode.cpp)
 ## same as for the library above
 # add_dependencies(vizzy_expressions_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_dependencies(tactileComputationalNode vizzy_tactile_driver_generate_messages_cpp)
+add_dependencies(tactileComputationalNode vizzy_tactile_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vizzy_tactile_driver
@@ -151,7 +153,7 @@ target_link_libraries(vizzy_tactile_driver
  )
 
 target_link_libraries(tactileComputationalNode
-   ${catkin_LIBRARIES}
+   ${catkin_LIBRARIES}  
  )
 
 #############

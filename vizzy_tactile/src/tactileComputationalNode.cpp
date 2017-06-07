@@ -26,16 +26,19 @@ double Bzz[121][121][81];
 double c[8][12];
 
 
+std::stringstream basepath;
+
+
 void ReadCalibFiles(){
 
-    std::stringstream basepath;
-    basepath << ros::package::getPath("vizzy_tactile");
+
+
     std::stringstream ss;
-    ss << basepath << "/calib_files/vqx05.txt";
+    ss << basepath.str() << "/calib_files/vqx05.txt";
 
     int i=0, k=0, j=0;
     float a, num=2.1;
-    FILE *fpx = fopen(ss.str(), "r");
+    FILE *fpx = fopen(ss.str().c_str(), "r");
     if (fpx == NULL) //checks for the file
     { //printf("\n Can’t open %s\n","vqx05.txt");
        // exit;
@@ -53,9 +56,9 @@ void ReadCalibFiles(){
     i=0; k=0; j=0;
 
     std::stringstream ssy;
-    ssy << basepath << "/calib_files/vqy05.txt";
+    ssy << basepath.str() << "/calib_files/vqy05.txt";
 
-    FILE *fpy = fopen(ssy.str(), "r");
+    FILE *fpy = fopen(ssy.str().c_str(), "r");
     if (fpy == NULL) //checks for the file
     {
        // exit;
@@ -72,8 +75,8 @@ void ReadCalibFiles(){
     //-- z
     i=0; k=0; j=0;
     std::stringstream ssz;
-    ssz << basepath << "/calib_files/vqz05.txt";
-    FILE *fpz = fopen(ssz.str(), "r");
+    ssz << basepath.str() << "/calib_files/vqz05.txt";
+    FILE *fpz = fopen(ssz.str().c_str(), "r");
     if (fpz == NULL) //checks for the file
     { //printf("\n Can’t open %s\n","vqz05.txt");
       //  exit;
@@ -89,8 +92,8 @@ void ReadCalibFiles(){
     fclose(fpz);
     // -- force
     std::stringstream ssc;
-    ssc << basepath << "/calib_files/cc.txt";
-    FILE *fpc = fopen(ssc.str(), "r");
+    ssc << basepath.str() << "/calib_files/cc.txt";
+    FILE *fpc = fopen(ssc.str().c_str(), "r");
     if (fpc == NULL) //checks for the file
     {
        // exit;
@@ -110,13 +113,12 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
   vizzy_tactile::TactSensorArray outmsg;
 
-
   std::stringstream aux;
 
   aux << "tactile_shapes_" << hand;
 
   //For each sensor
-  int sensor=0;
+  int id=0;
   //int x,y,z;                    // Received values
   float Bx,By,Bz;               // Magnetic Field [Oe]
   float pos_x, pos_y, pos_z;    // Magnet Position Relative to the Sensor [mm]
@@ -127,7 +129,8 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
   double errorB_temp, errorB=21.5;
   int k_2,j_2,i_2;
   int k,j,i;
-  int le_x, le_y, le_z;         //indice positions
+  int le_x = 0, le_y = 0, le_z = 0;         //indice positions
+
   int offset_z=2;
 
   for(auto sensor: msg->sensorsArray)
@@ -262,9 +265,9 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
     //Convert to Force - different for each sensor.
 
-    Fx=dx*(c[1][sensor]+c[2][sensor]*dz);
-    Fy=dy*(c[3][sensor]+c[4][sensor]*dz);
-    Fz=(c[5][sensor]*dz*dz+c[6][sensor]*abs(dz))*(1-dy*dy*c[7][sensor])*(1-dx*dx*c[8][sensor]);
+    Fx=dx*(c[0][id]+c[1][id]*dz);
+    Fy=dy*(c[2][id]+c[3][id]*dz);
+    Fz=(c[4][id]*dz*dz+c[5][id]*abs(dz))*(1-dy*dy*c[6][id])*(1-dx*dx*c[7][id]);
 
 
     //SUBSTITUIR ZERO PELOS VALORES REAIS
@@ -331,6 +334,8 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "tactileComputationalNode");
   ros::NodeHandle nh;
   ros::NodeHandle nPriv("~");
+
+  basepath << ros::package::getPath("vizzy_tactile");
 
   sub = nh.subscribe("/tactile", 1000, subscriberCallback);
   pub = nh.advertise<vizzy_tactile::TactSensorArray>("tactileForceField", 1000);
