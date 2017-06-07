@@ -11,7 +11,6 @@
 #include <tf/tf.h>
 
 
-
 ros::Publisher pub;
 ros::Subscriber sub;
 ros::Publisher marker_pub;
@@ -27,11 +26,16 @@ double c[8][12];
 
 
 void ReadCalibFiles(){
+
+    stringstream basepath;
+    basepath << ros::package::getPath("vizzy_tactile");
+    stringstream ss << basepath << "/calib_files/vqx05.txt";
+
     int i=0, k=0, j=0;
     float a, num=2.1;
-    FILE *fpx = fopen("vqx05.txt", "r");
+    FILE *fpx = fopen(ss.str(), "r");
     if (fpx == NULL) //checks for the file
-    { printf("\n Can’t open %s\n","vqx05.txt");
+    { //printf("\n Can’t open %s\n","vqx05.txt");
        // exit;
     }
     for(i=0;i<121;i++){
@@ -45,9 +49,12 @@ void ReadCalibFiles(){
     fclose(fpx);
 // -- y
     i=0; k=0; j=0;
-    FILE *fpy = fopen("vqy05.txt", "r");
+
+    stringstream ssy << basepath << "/calib_files/vqy05.txt";
+
+    FILE *fpy = fopen(ssy.str(), "r");
     if (fpy == NULL) //checks for the file
-    { printf("\n Can’t open %s\n","vqy05.txt");
+    {
        // exit;
     }
     for(i=0;i<121;i++){
@@ -61,9 +68,10 @@ void ReadCalibFiles(){
     fclose(fpy);
     //-- z
     i=0; k=0; j=0;
-    FILE *fpz = fopen("vqz05.txt", "r");
+    stringstream ss << basepath << "/calib_files/vqz05.txt";
+    FILE *fpz = fopen(ssz.str(), "r");
     if (fpz == NULL) //checks for the file
-    { printf("\n Can’t open %s\n","vqz05.txt");
+    { //printf("\n Can’t open %s\n","vqz05.txt");
       //  exit;
     }
     for(i=0;i<121;i++){
@@ -76,9 +84,10 @@ void ReadCalibFiles(){
     }
     fclose(fpz);
     // -- force
-    FILE *fpc = fopen("cc.txt", "r");
+    stringstream ssc << basepath << "/calib_files/cc.txt";
+    FILE *fpc = fopen(ssc.str(), "r");
     if (fpc == NULL) //checks for the file
-    { printf("\n Can’t open %s\n","cc.txt");
+    {
        // exit;
     }
     for(i=0;i<8;i++){
@@ -100,10 +109,6 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
   std::stringstream aux;
 
   aux << "tactile_shapes_" << hand;
-
-
-
-
 
   //For each sensor
   int i=0;
@@ -235,7 +240,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 	pos_x0[i] += pos_x;
 	pos_y0[i] += pos_y;
 	pos_z0[i] += pos_z;
-        i++;
+    i++;
 
      continue;
     }else if(countMeasures == 11)
@@ -244,7 +249,6 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
         pos_y0[i] /= 10;
         pos_z0[i] /= 10;
     }
-
 
     dx = pos_x - pos_x0[i];
     dy = pos_y - pos_y0[i];
@@ -288,12 +292,10 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
     marker.points.push_back(p);
 
-
     marker.color.a = 1.0; // Don't forget to set the alpha!
     marker.color.r = 1.0;
     marker.color.g = 0.0;
     marker.color.b = 0.0;
-
 
     marker.scale.x = 0.005; //Grossura da seta
     marker.scale.y = 0.01; //Isto é a grossura da seta...
@@ -312,8 +314,6 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
   if(countMeasures > 10)
   pub.publish(outmsg);
-
-
 }
 
 
@@ -330,6 +330,8 @@ int main(int argc, char **argv)
   pub = nh.advertise<vizzy_tactile::TactSensorArray>("tactileForceField", 1000);
   marker_pub = nh.advertise<visualization_msgs::Marker>("tactileForceMarker", 1000);
 
+  ReadCalibFiles();
+
   nPriv.param<std::string>("hand", hand, "right");
 
   countMeasures = 0;
@@ -340,8 +342,6 @@ int main(int argc, char **argv)
     pos_y0[i] = 0;
     pos_z0[i] = 0;
   }
-
-
 
   ros::spin();
 
