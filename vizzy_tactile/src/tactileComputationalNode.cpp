@@ -30,7 +30,8 @@ void ReadCalibFiles(){
 
     std::stringstream basepath;
     basepath << ros::package::getPath("vizzy_tactile");
-    std::stringstream ss << basepath << "/calib_files/vqx05.txt";
+    std::stringstream ss;
+    ss << basepath << "/calib_files/vqx05.txt";
 
     int i=0, k=0, j=0;
     float a, num=2.1;
@@ -51,7 +52,8 @@ void ReadCalibFiles(){
 // -- y
     i=0; k=0; j=0;
 
-    std::stringstream ssy << basepath << "/calib_files/vqy05.txt";
+    std::stringstream ssy;
+    ssy << basepath << "/calib_files/vqy05.txt";
 
     FILE *fpy = fopen(ssy.str(), "r");
     if (fpy == NULL) //checks for the file
@@ -69,7 +71,8 @@ void ReadCalibFiles(){
     fclose(fpy);
     //-- z
     i=0; k=0; j=0;
-    std::stringstream ss << basepath << "/calib_files/vqz05.txt";
+    std::stringstream ssz;
+    ssz << basepath << "/calib_files/vqz05.txt";
     FILE *fpz = fopen(ssz.str(), "r");
     if (fpz == NULL) //checks for the file
     { //printf("\n Can’t open %s\n","vqz05.txt");
@@ -85,7 +88,8 @@ void ReadCalibFiles(){
     }
     fclose(fpz);
     // -- force
-    std::stringstream ssc << basepath << "/calib_files/cc.txt";
+    std::stringstream ssc;
+    ssc << basepath << "/calib_files/cc.txt";
     FILE *fpc = fopen(ssc.str(), "r");
     if (fpc == NULL) //checks for the file
     {
@@ -112,7 +116,6 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
   aux << "tactile_shapes_" << hand;
 
   //For each sensor
-  int i=0;
   int sensor=0;
   //int x,y,z;                    // Received values
   float Bx,By,Bz;               // Magnetic Field [Oe]
