@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <launch>
-<arg name="deviceRight" default="/dev/ttyUSB1" />
+<arg name="deviceRight" default="/dev/ttyUSB2" />
 <arg name="deviceLeft" default="/dev/ttyUSB2" />
 
 <arg name="baudrate" default="115200"/>
@@ -10,19 +10,21 @@
 <remap from="/tactile" to="/tactile_driver_right"/>
 </node>
 
+<!--
 <node name="tactDriverLeftHand" pkg="vizzy_tactile" type="serial_node.py" output="screen" args="$(arg deviceLeft)">
 <param name="baud" type="str" value="$(arg baudrate)" />
 <remap from="/tactile" to="/tactile_driver_left"/>
-</node>
+</node> -->
 
 <node name="tactComputerRightHand" pkg="vizzy_tactile" type="tactileComputationalNode" output="screen">
 <param name="hand" type="str" value="right" />
 <remap from="/tactile" to="/tactile_driver_right"/>
 </node>
 
+<!--
 <node name="tactComputerLeftHand" pkg="vizzy_tactile" type="tactileComputationalNode" output="screen">
 <param name="hand" type="str" value="left" />
 <remap from="/tactile" to="/tactile_driver_left"/>
-</node>
+</node> -->
 
 </launch>

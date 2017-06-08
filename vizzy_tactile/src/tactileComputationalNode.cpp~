@@ -67,12 +67,7 @@ public:
     By = y*0.161*0.01;
     Bz = fabs(z*0.294*0.01);
 
-
-    //Stuff de sensores
-  
-
-	
-    
+    ROS_ERROR_STREAM("Bx: " << Bx << "| By: " << By << "| Bz: " << Bz);
 
     //Convert to Displacements
 
@@ -187,13 +182,26 @@ public:
     dx = pos_x - pos_x0;
     dy = pos_y - pos_y0;
     dz = pos_z - pos_z0;
- 
+
+    ROS_ERROR_STREAM("dx: " << dx << "| dy: " << dy << "| dz: " << dz);
+    ROS_ERROR_STREAM("pos_x0: " << pos_x0 << "| pos_y0: " << pos_y0 << "| pos_z0: " << pos_z0);
+    ROS_ERROR_STREAM("pos_x: " << pos_x << "| pos_y: " << pos_y << "| pos_z: " << pos_z);
+
     //Convert to Force - different for each sensor.
 
     Fx=dx*c[id-1][0]+c[id-1][1]*dz;
-    Fy=dy*c[id-1][2]+c[id-1][3]*dz; 
+
+    ROS_ERROR_STREAM("c[0][id-1]: " << c[0][id-1] << "| c[1][id-1]: " << c[1][id-1]);
+    ROS_ERROR_STREAM("Fx: " << Fx);
+
+
+
+    Fy=dy*c[id-1][2]+c[id-1][3]*dz;
+    ROS_ERROR_STREAM("Fy: " << Fy);
     Fz=(c[id-1][4]*dz*dz+c[id-1][5]*fabs(dz))*(1-dy*dy*c[id-1][6])*(1-dx*dx*c[id-1][7]);
-   
+    //Fz=c[4][id]*dz*dz+c[5][id]*fabs(dz);//)*(1-dy*dy*c[6][id])*(1-dx*dx*c[7][id]);
+    ROS_ERROR_STREAM("Fz: " << Fz);
+
     return true;
   }
 
