@@ -121,6 +121,9 @@ catkin_package(
    DEPENDS system_lib
 )
 
+
+include_directories(${catkin_INCLUDE_DIRS})
+
 ###########
 ## Build ##
 ###########
