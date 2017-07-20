@@ -46,7 +46,7 @@ public:
 
   Sensor(int id) : id(id), pos_x0(0), pos_y0(0), pos_z0(0), countMeasures(0)
   {
-	
+
   }
 
   bool computeForce(double x, double y, double z)
@@ -69,10 +69,10 @@ public:
 
 
     //Stuff de sensores
-  
 
-	
-    
+
+
+
 
     //Convert to Displacements
 
@@ -131,7 +131,12 @@ public:
     }
     pos_x = (double)le_x*0.05-3; pos_y = (float)le_y*0.05-3; pos_z = (float)le_z*0.05;
 
-
+    if(le_x==0) le_x=1;
+    if(le_x==300) le_x=299;
+    if(le_y==0) le_y=1;
+    if(le_y==300) le_y=299;
+    if(le_z==0) le_z=1;
+    if(le_z==200) le_z=199;
     // Last step to position
     double factorx, factory, factorz;
     // -- X
@@ -187,13 +192,13 @@ public:
     dx = pos_x - pos_x0;
     dy = pos_y - pos_y0;
     dz = pos_z - pos_z0;
- 
+
     //Convert to Force - different for each sensor.
 
     Fx=dx*c[id-1][0]+c[id-1][1]*dz;
-    Fy=dy*c[id-1][2]+c[id-1][3]*dz; 
+    Fy=dy*c[id-1][2]+c[id-1][3]*dz;
     Fz=(c[id-1][4]*dz*dz+c[id-1][5]*fabs(dz))*(1-dy*dy*c[id-1][6])*(1-dx*dx*c[id-1][7]);
-   
+
     return true;
   }
 
@@ -436,7 +441,7 @@ int main(int argc, char **argv)
   ROS_ERROR_STREAM("Going to read files");
   ReadCalibFiles();
   ROS_ERROR_STREAM("Files read");
-  
+
   nPriv.param<std::string>("hand", hand, "right");
 
 
