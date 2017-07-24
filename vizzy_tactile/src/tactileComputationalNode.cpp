@@ -46,7 +46,7 @@ public:
 
   Sensor(int id) : id(id), pos_x0(0), pos_y0(0), pos_z0(0), countMeasures(0)
   {
-	
+
   }
 
   bool computeForce(double x, double y, double z)
@@ -67,17 +67,6 @@ public:
     By = y*0.161*0.01;
     Bz = fabs(z*0.294*0.01);
 
-
-    //Stuff de sensores
-  
-	if(id==13){
-		Bx=Bx-8;}
-	if(id==14){
-		Bx=Bx-6;}
- 	if(id==15){
-		Bx=Bx-6;}
-	
-    
 
     //Convert to Displacements
 
@@ -135,9 +124,15 @@ public:
       }
     }
     pos_x = (double)le_x*0.05-3; pos_y = (float)le_y*0.05-3; pos_z = (float)le_z*0.05;
-
-
+    if(le_x<=0) le_x=1;
+    if(le_x>=120) le_x=120-1;
+    if(le_y<=0) le_y=1;
+    if(le_y>=120) le_y=120-1;
+    if(le_z<=0) le_z=1;
+    if(le_z>=80) le_z=80-1;
     // Last step to position
+
+
     double factorx, factory, factorz;
     // -- X
     if (fabs(Bxx[le_x+1][le_y][le_z]-Bx)< fabs(Bxx[le_x-1][le_y][le_z]-Bx)){
@@ -168,7 +163,6 @@ public:
     }
 
 
-
     if(countMeasures < 2)
     {
       countMeasures++;
@@ -192,13 +186,13 @@ public:
     dx = pos_x - pos_x0;
     dy = pos_y - pos_y0;
     dz = pos_z - pos_z0;
- 
+
     //Convert to Force - different for each sensor.
 
     Fx=dx*c[id-1][0]+c[id-1][1]*dz;
-    Fy=dy*c[id-1][2]+c[id-1][3]*dz; 
+    Fy=dy*c[id-1][2]+c[id-1][3]*dz;
     Fz=(c[id-1][4]*dz*dz+c[id-1][5]*fabs(dz))*(1-dy*dy*c[id-1][6])*(1-dx*dx*c[id-1][7]);
-   
+
     return true;
   }
 
@@ -354,6 +348,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     visualization_msgs::Marker marker;
     marker.ns = aux.str();
     marker.header.stamp = ros::Time::now();
+    outmsg.header.stamp = marker.header.stamp;
 
     marker.type = visualization_msgs::Marker::ARROW;
 
@@ -438,10 +433,10 @@ int main(int argc, char **argv)
   pub = nh.advertise<vizzy_tactile::TactSensorArray>("tactileForceField", 1000);
   marker_pub = nh.advertise<visualization_msgs::Marker>("tactileForceMarker", 1000);
 
-  ROS_ERROR_STREAM("Going to read files");
+  ROS_INFO_STREAM("Going to read files");
   ReadCalibFiles();
-  ROS_ERROR_STREAM("Files read");
-  
+  ROS_INFO_STREAM("Files read");
+
   nPriv.param<std::string>("hand", hand, "right");
 
 

@@ -1,0 +1,1 @@
+KERNEL=="ttyACM[0-9]", PROGRAM="home/vizzy/catkin_workspace/src/vizzy_tactile_drivers/vizzy_tactile/scripts/get_serial.py %k", ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="000a", SYMLINK="%c", MODE="660"
