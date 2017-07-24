@@ -16,11 +16,12 @@
 #include <stdlib.h>
 
 ros::Publisher pub;
+ros::Publisher pubCalibration;
 ros::Subscriber sub;
 ros::Publisher marker_pub;
 
 std::string hand;
-
+bool calib;
 
 double Bxx[121][121][81]; //BvsD files
 double Byy[121][121][81];
@@ -300,6 +301,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 {
 
   vizzy_tactile::TactSensorArray outmsg;
+  vizzy_tactile::TactSensorArray calibmsg;
 
   std::stringstream aux;
 
@@ -419,8 +421,10 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     marker_pub.publish(marker);
   }
 
-
-    pub.publish(outmsg);
+    if(calib)
+      pubCalibration.pub(calibmsg);
+    else
+      pub.publish(outmsg);
 }
 
 
@@ -435,7 +439,7 @@ int main(int argc, char **argv)
   //ros::ServiceServer service = n.advertiseService("setNumberOfSensors", add);
 
   sub = nh.subscribe("/tactile", 1000, subscriberCallback);
-  pub = nh.advertise<vizzy_tactile::TactSensorArray>("tactileForceField", 1000);
+
   marker_pub = nh.advertise<visualization_msgs::Marker>("tactileForceMarker", 1000);
 
   ROS_ERROR_STREAM("Going to read files");
@@ -443,6 +447,13 @@ int main(int argc, char **argv)
   ROS_ERROR_STREAM("Files read");
 
   nPriv.param<std::string>("hand", hand, "right");
+  nPriv.param<bool>("calib", calib, false);
+
+  if(calib)
+    pubCalibration = nh.advertise<vizzy_tactile::TactSensorArray>("calibDisplace", 1000);
+  else
+    pub = nh.advertise<vizzy_tactile::TactSensorArray>("tactileForceField", 1000);
+
 
 
   ros::spin();

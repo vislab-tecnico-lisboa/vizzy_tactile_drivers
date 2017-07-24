@@ -30,8 +30,6 @@ def callback(optoforce_msg, vizzy_tactsensarray_msg):
     optoz = optoforce_msg.wrench.force.z
 
 
-
-
     vizzy_x = vizzy_tactsensarray_msg[0].force.x
     vizzy_y = vizzy_tactsensarray_msg[0].force.y
     vizzy_z = vizzy_tactsensarray_msg[0].force.z
