@@ -9,7 +9,7 @@
         "30Hz"
         "10Hz"
         -->
-  <arg name="speed" default="100Hz"/>
+  <arg name="speed" default="30Hz"/>
   <!-- Internal filtering. Available values:
         "No"
         "500Hz"

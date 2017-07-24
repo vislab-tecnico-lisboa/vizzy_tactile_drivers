@@ -129,6 +129,7 @@ include_directories(${catkin_INCLUDE_DIRS})
 ###########
 
 SET(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -std=c++11")
+#SET(CMAKE_CXX_FLAGS_RELEASE "-Wall -g -std=c++11")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}") #Default build mode is release mode
 
 ## Specify additional locations of header files
