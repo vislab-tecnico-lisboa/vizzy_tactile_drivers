@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <launch>
-<arg name="deviceRight" default="/dev/ttyUSB2" />
+<arg name="deviceRight" default="/dev/ttyUSB1" />
 <arg name="deviceLeft" default="/dev/ttyUSB2" />
 
 <arg name="baudrate" default="115200"/>
@@ -9,6 +9,9 @@
 <param name="baud" type="str" value="$(arg baudrate)" />
 <remap from="/tactile" to="/tactile_driver_right"/>
 </node>
+
+<param name="robot_description" command="$(find xacro)/xacro '$(find vizzy_tactile)/urdf/draft_tactile.xacro' sensor_frame_id:=$(arg sensor_frame_id)" />
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
 <!--
 <node name="tactDriverLeftHand" pkg="vizzy_tactile" type="serial_node.py" output="screen" args="$(arg deviceLeft)">

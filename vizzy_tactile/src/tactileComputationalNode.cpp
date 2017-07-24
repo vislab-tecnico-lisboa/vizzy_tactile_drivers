@@ -25,7 +25,7 @@ std::string hand;
 double Bxx[121][121][81]; //BvsD files
 double Byy[121][121][81];
 double Bzz[121][121][81];
-double c[8][16]; //Mudar isto
+double c[16][8]; //Mudar isto
 
 int offset_z=2;
 
@@ -70,7 +70,12 @@ public:
 
     //Stuff de sensores
   
-
+	if(id==13){
+		Bx=Bx-8;}
+	if(id==14){
+		Bx=Bx-6;}
+ 	if(id==15){
+		Bx=Bx-6;}
 	
     
 
@@ -280,8 +285,8 @@ void ReadCalibFiles(){
   {
     // exit;
   }
-  for(i=0;i<8;i++){
-    for(j=0;j<16;j++){
+  for(i=0;i<16;i++){
+    for(j=0;j<8;j++){
       if(fscanf(fpc, "%f", &num) != 1)
         exit(-1);
       c[i][j] = num;
