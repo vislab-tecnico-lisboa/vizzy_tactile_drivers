@@ -21,8 +21,9 @@
 <remap from="/tactile" to="/tactile_driver_left"/>
 </node> -->
 
-<node name="tactComputerRightHand" pkg="vizzy_tactile" type="tactileComputationalNode" output="screen" launch-prefix="xterm -e valgrind">
+<node name="tactComputerRightHand" pkg="vizzy_tactile" type="tactileComputationalNode" output="screen">
 <param name="hand" type="str" value="right" />
+<param name="calib" type="bool" value="$(arg calib)" />
 <remap from="/tactile" to="/tactile_driver_right"/>
 </node>
 
