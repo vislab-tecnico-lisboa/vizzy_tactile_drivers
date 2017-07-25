@@ -53,8 +53,6 @@ def callback(optoforce_msg, vizzy_tactsensarray_msg):
         vizzy_y.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].displacement.y)
         vizzy_z.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].displacement.z)
 
-        print vizzy_x, vizzy_y, vizzy_z
-
 
 def printAllSensors():
     global fullList
