@@ -2,7 +2,7 @@
 <launch>
 <arg name="deviceRight" default="/dev/ttyUSB1" />
 <arg name="deviceLeft" default="/dev/ttyUSB2" />
-
+<arg name="calib" default="false" />
 <arg name="baudrate" default="115200"/>
 
 <arg name="sensor_frame_id" default="/tactile_right_0"/>
@@ -21,7 +21,7 @@
 <remap from="/tactile" to="/tactile_driver_left"/>
 </node> -->
 
-<node name="tactComputerRightHand" pkg="vizzy_tactile" type="tactileComputationalNode" launch-prefix="xterm -e valgrind" output="screen">
+<node name="tactComputerRightHand" pkg="vizzy_tactile" type="tactileComputationalNode" output="screen">
 <param name="hand" type="str" value="right" />
 <remap from="/tactile" to="/tactile_driver_right"/>
 </node>
