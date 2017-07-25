@@ -165,7 +165,7 @@ def calib():
                 px = np.poly1d(x_coefs)
                 xp = np.linspace(-3, 3, 100)
 
-                _ = plt.plot(vizzy_x_arr, opto_x_arr, '.', xp, px(xp), '-')
+                plt.plot(vizzy_x_arr, opto_x_arr, '.', xp, px(xp), '-')
 
                 plt.show()
 
