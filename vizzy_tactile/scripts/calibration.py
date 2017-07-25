@@ -61,17 +61,17 @@ def printAllSensors():
     print "Full sensor list ( [Number on List]: [Sensor frame ID])"
 
     for x in fullList:
-        print "[%d]: ", x.frame_id
+        print "[%d]: " % i, x.frame_id
 
 
 def printCalibrateSensors():
+    print " ---- Calibrated sensors in this session ----"
     for x in calibratedList:
-        print "Calibrated sensors in this session"
         print x.frame_id
 
 def printUncalibratedSensors():
+    print "---- Uncalibrated sensors in this session ----"
     for x in uncalibratedList:
-        print "Uncalibrated sensors in this session"
         print x.frame_id
 
 def calib():
@@ -135,7 +135,7 @@ def calib():
                 vizzy_y = []
                 vizzy_z = []
 
-                print "Getting data for sensor [%d]: " % sensorToCalib, fullList[sensorToCalib]
+                print "Getting data for sensor [%d]: " % sensorToCalib, fullList[sensorToCalib].frame_id
                 print "When you think there is enough data press [enter]"
                 state = "getdata"
 
