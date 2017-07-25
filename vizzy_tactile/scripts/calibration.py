@@ -32,6 +32,7 @@ def callback(optoforce_msg, vizzy_tactsensarray_msg):
 
     if numSensors < 0:
         numSensors = len(vizzy_tactsensarray_msg.sensorArray)
+        print " "
         print "---- Found %d sensors ----" % numSensors
 
         fullList = vizzy_tactsensarray_msg.sensorArray
@@ -58,18 +59,22 @@ def printAllSensors():
     global fullList
 
     i = 0
+    print " "
     print "**** Full sensor list ( [Number on List]: [Sensor frame ID]) ****"
 
     for x in fullList:
         print "[%d]: " % i, x.frame_id
+        i = i+1
 
 
 def printCalibrateSensors():
+    print " "
     print " ---- Calibrated sensors in this session ----"
     for x in calibratedList:
         print x.frame_id
 
 def printUncalibratedSensors():
+    print " "
     print "---- Uncalibrated sensors in this session ----"
     for x in uncalibratedList:
         print x.frame_id
@@ -139,7 +144,6 @@ def calib():
             print "Getting data for sensor [%d]: " % sensorToCalib, fullList[sensorToCalib].frame_id
             print "When you think there is enough data press [enter]"
             state = "getdata"
-
 
         rate.sleep()
 
