@@ -59,7 +59,7 @@ def callback(optoforce_msg, vizzy_tactsensarray_msg):
 
         vizzy_x.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].displacement.x)
         vizzy_y.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].displacement.y)
-        vizzy_z.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].displacement.z)
+        vizzy_z.append(abs(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].displacement.z))
 
 
 def printAllSensors():
@@ -177,8 +177,6 @@ def calib():
                 yp = np.linspace(-3, 3, 100)
                 zp = np.linspace(0, 4, 100)
 
-                fig = plt.figure()
-
                 f, (ax1, ax2, ax3) = plt.subplots(3)
 
                 ax1.plot(vizzy_x_arr, opto_x_arr, '.', xp, px(xp), '-')
@@ -198,27 +196,24 @@ def calib():
                     calibratedList.append(fullList[sensorToCalib])
                     uncalibratedList.remove(fullList[sensorToCalib])
                     state = "chooseSensor"
-                    plt.close(fig)
+                    plt.close(f)
 
                     idx = int(re.search(r'\d+', fullList[sensorToCalib].frame_id).group())
                     print "idx: ", idx
 
-                    resultsMat[idx][0] = x_coefs[0]
-                    resultsMat[idx][1] = x_coefs[1]
-                    resultsMat[idx][2] = y_coefs[0]
-                    resultsMat[idx][3] = y_coefs[1]
-                    resultsMat[idx][4] = z_coefs[0]
-                    resultsMat[idx][5] = z_coefs[1]
-                    resultsMat[idx][6] = z_coefs[2]
+                    resultsMat[idx-1][0] = x_coefs[0]
+                    resultsMat[idx-1][1] = x_coefs[1]
+                    resultsMat[idx-1][2] = y_coefs[0]
+                    resultsMat[idx-1][3] = y_coefs[1]
+                    resultsMat[idx-1][4] = z_coefs[0]
+                    resultsMat[idx-1][5] = z_coefs[1]
+                    resultsMat[idx-1][6] = z_coefs[2]
 
                     print resultsMat
 
-
-
                 else:
-
                     raw_input("Ok, let's do it again. Press [enter] when ready to start")
-                    plt.close(fig)
+                    plt.close(f)
                     optox = []
                     optoy = []
                     optoz = []
@@ -237,7 +232,9 @@ def calib():
 
         rate.sleep()
 
-    print "EXITING! SEE YOU SOON"
+    file = open("newCalibration.txt", 'w')
+    file.write(resultsMat)
+    file.close()
 
 if __name__ == '__main__':
     try:
