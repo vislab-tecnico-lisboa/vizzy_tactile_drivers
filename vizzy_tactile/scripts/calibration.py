@@ -5,6 +5,7 @@ import message_filters
 from vizzy_tactile.msg import TactSensor, TactSensorArray
 from geometry_msgs.msg import WrenchStamped
 import matplotlib.pyplot as plt
+import re
 
 # Scypy stuff
 import numpy as np
@@ -21,7 +22,10 @@ global sensorToCalib
 global fullList
 global optox, optoy, optoz
 global vizzy_x, vizzy_y, vizzy_z
+global resultsMat
 
+#DEFINE
+MAX_ID = 16
 
 def callback(optoforce_msg, vizzy_tactsensarray_msg):
 
@@ -30,9 +34,13 @@ def callback(optoforce_msg, vizzy_tactsensarray_msg):
     global fullList
     global optox, optoy, optoz
     global vizzy_x, vizzy_y, vizzy_z
+    global resultsMat
 
     if numSensors < 0:
         numSensors = len(vizzy_tactsensarray_msg.sensorArray)
+
+        resultsMat = [[0 for x in range(7)] for y in range(MAX_ID)]
+
         print " "
         print "---- Found %d sensors ----" % numSensors
 
@@ -92,7 +100,6 @@ def calib():
     calibratedList = []
     uncalibratedList = []
 
-
     rospy.init_node('tactile_calibrator')
     numSensors = -1
     state = "init"
@@ -148,8 +155,6 @@ def calib():
             else:
                 print "dafuq are you doing?"
 
-
-
             if state == "fit_data":
 
                 opto_x_arr = np.array(optox)
@@ -161,18 +166,78 @@ def calib():
                 vizzy_z_arr = np.array(vizzy_z)
 
                 x_coefs = np.polyfit(vizzy_x_arr, opto_x_arr, 1)
+                y_coefs = np.polyfit(vizzy_y_arr, opto_y_arr, 1)
+                z_coefs = np.polyfit(vizzy_z_arr, opto_z_arr, 2)
 
                 px = np.poly1d(x_coefs)
-                xp = np.linspace(-3, 3, 100)
+                py = np.poly1d(y_coefs)
+                pz = np.poly1d(z_coefs)
 
-                plt.plot(vizzy_x_arr, opto_x_arr, '.', xp, px(xp), '-')
+                xp = np.linspace(-3, 3, 100)
+                yp = np.linspace(-3, 3, 100)
+                zp = np.linspace(0, 4, 100)
+
+                fig = plt.figure()
+
+                f, (ax1, ax2, ax3) = plt.subplots(3)
+
+                ax1.plot(vizzy_x_arr, opto_x_arr, '.', xp, px(xp), '-')
+                ax2.plot(vizzy_y_arr, opto_y_arr, '.', yp, py(yp), '-')
+                ax3.plot(vizzy_z_arr, opto_z_arr, '.', zp, pz(zp), '-')
+
+                ax1.set_title("x")
+                ax2.set_title("y")
+                ax3.set_title("z")
 
                 plt.show()
 
+                cmd = raw_input("Is this calibration ok? [Y/n]")
+
+                if cmd == "Y" or cmd == "y":
+                    print "\n \n Very well. Let's move on..."
+                    calibratedList.append(fullList[sensorToCalib])
+                    uncalibratedList.remove(fullList[sensorToCalib])
+                    state = "chooseSensor"
+                    plt.close(fig)
+
+                    idx = int(re.search(r'\d+', fullList[sensorToCalib].frame_id).group())
+                    print "idx: ", idx
+
+                    resultsMat[idx][0] = x_coefs[0]
+                    resultsMat[idx][1] = x_coefs[1]
+                    resultsMat[idx][2] = y_coefs[0]
+                    resultsMat[idx][3] = y_coefs[1]
+                    resultsMat[idx][4] = z_coefs[0]
+                    resultsMat[idx][5] = z_coefs[1]
+                    resultsMat[idx][6] = z_coefs[2]
+
+                    print resultsMat
 
 
+
+                else:
+
+                    raw_input("Ok, let's do it again. Press [enter] when ready to start")
+                    plt.close(fig)
+                    optox = []
+                    optoy = []
+                    optoz = []
+
+                    vizzy_x = []
+                    vizzy_y = []
+                    vizzy_z = []
+
+                    print "Getting data for sensor [%d]: " % sensorToCalib, fullList[sensorToCalib].frame_id
+                    state = "getdata"
+                    text = raw_input("When you think there is enough data press [enter]")
+                    if text == "":
+                        state = "fit_data"
+                    else:
+                        print "dafuq are you doing? Press [enter] when there is enough data, don't write random stuff"
 
         rate.sleep()
+
+    print "EXITING! SEE YOU SOON"
 
 if __name__ == '__main__':
     try:
