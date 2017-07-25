@@ -43,13 +43,13 @@ def callback(optoforce_msg, vizzy_tactsensarray_msg):
         state = "chooseSensor"
 
     if state == "getdata":
-        optox.extend(optoforce_msg.wrench.force.x)
-        optoy.extend(optoforce_msg.wrench.force.y)
-        optoz.extend(optoforce_msg.wrench.force.z)
+        optox.append(optoforce_msg.wrench.force.x)
+        optoy.append(optoforce_msg.wrench.force.y)
+        optoz.append(optoforce_msg.wrench.force.z)
 
-        vizzy_x.extend(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.x)
-        vizzy_y.extend(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.y)
-        vizzy_z.extend(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.z)
+        vizzy_x.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.x)
+        vizzy_y.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.y)
+        vizzy_z.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.z)
 
         print "getting data"
 
@@ -58,10 +58,10 @@ def printAllSensors():
     global fullList
 
     i = 0
-    print "Full sensor list ( [Number on List]: [Sensor ID])"
+    print "Full sensor list ( [Number on List]: [Sensor frame ID])"
 
     for x in fullList:
-        print "[%d]: ", x
+        print "[%d]: ", x.frame_id
 
 
 def printCalibrateSensors():
