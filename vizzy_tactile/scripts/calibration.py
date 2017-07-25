@@ -232,9 +232,9 @@ def calib():
 
         rate.sleep()
 
-    file = open("newCalibration.txt", 'w')
-    file.write(resultsMat)
-    file.close()
+    outfile = file("newCalibration.txt", 'w')
+
+    np.savetxt(outfile, resultsMat, fmt='%-7.2f')
 
 if __name__ == '__main__':
     try:
