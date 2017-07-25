@@ -58,7 +58,7 @@ def printAllSensors():
     global fullList
 
     i = 0
-    print "Full sensor list ( [Number on List]: [Sensor frame ID])"
+    print "**** Full sensor list ( [Number on List]: [Sensor frame ID]) ****"
 
     for x in fullList:
         print "[%d]: " % i, x.frame_id
@@ -121,23 +121,24 @@ def calib():
 
             except ValueError:
                 print "lol... that's not a number"
+                continue
 
             except IndexError:
                 print "The number is not on the list"
+                continue
 
-            finally:
 
-                optox = []
-                optoy = []
-                optoz = []
+            optox = []
+            optoy = []
+            optoz = []
 
-                vizzy_x = []
-                vizzy_y = []
-                vizzy_z = []
+            vizzy_x = []
+            vizzy_y = []
+            vizzy_z = []
 
-                print "Getting data for sensor [%d]: " % sensorToCalib, fullList[sensorToCalib].frame_id
-                print "When you think there is enough data press [enter]"
-                state = "getdata"
+            print "Getting data for sensor [%d]: " % sensorToCalib, fullList[sensorToCalib].frame_id
+            print "When you think there is enough data press [enter]"
+            state = "getdata"
 
 
         rate.sleep()
