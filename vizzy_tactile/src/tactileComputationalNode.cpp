@@ -472,6 +472,8 @@ int main(int argc, char **argv)
   nPriv.param<std::string>("hand", hand, "right");
   nPriv.param<bool>("calib", calib, false);
 
+  ROS_ERROR_STREAM("calib: " << calib);
+
   if(calib)
     pubCalibration = nh.advertise<vizzy_tactile::TactSensorArray>("calibDisplace", 1000);
   else
