@@ -67,12 +67,12 @@ def printAllSensors():
 def printCalibrateSensors():
     for x in calibratedList:
         print "Calibrated sensors in this session"
-        print x
+        print x.frame_id
 
 def printUncalibratedSensors():
     for x in uncalibratedList:
         print "Uncalibrated sensors in this session"
-        print x
+        print x.frame_id
 
 def calib():
     global numSensors
