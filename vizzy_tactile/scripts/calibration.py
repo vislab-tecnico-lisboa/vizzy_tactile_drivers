@@ -111,8 +111,6 @@ def calib():
 
     ts = message_filters.ApproximateTimeSynchronizer([opto_sub, vizzy_sub], 10, 0.01)
 
-    print "Nice to meet you"
-
     ts.registerCallback(callback)
 
     rate = rospy.Rate(200)
@@ -228,13 +226,16 @@ def calib():
                     if text == "":
                         state = "fit_data"
                     else:
-                        print "dafuq are you doing? Press [enter] when there is enough data, don't write random stuff"
+                        print "Press [enter] when there is enough data, don't write random stuff"
 
         rate.sleep()
 
+    print "Writing calibration file"
     outfile = file("newCalibration.txt", 'w')
 
-    np.savetxt(outfile, resultsMat, fmt='%-7.2f')
+    np.savetxt(outfile, resultsMat, fmt='%-7.4f')
+
+    print "Done. Bye."
 
 if __name__ == '__main__':
     try:
