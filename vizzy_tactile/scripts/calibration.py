@@ -4,6 +4,7 @@ import rospy
 import message_filters
 from vizzy_tactile.msg import TactSensor, TactSensorArray
 from geometry_msgs.msg import WrenchStamped
+import matplotlib.pyplot as plt
 
 # Scypy stuff
 import numpy as np
@@ -148,6 +149,27 @@ def calib():
                 state = "fit_data"
             else:
                 print "dafuq are you doing?"
+
+
+
+            if state == "fit_data":
+
+                opto_x_arr = np.array(optox)
+                opto_y_arr = np.array(optoy)
+                opto_z_arr = np.array(optoz)
+
+                vizzy_x_arr = np.array(vizzy_x)
+                vizzy_y_arr = np.array(vizzy_y)
+                vizzy_z_arr = np.array(vizzy_z)
+
+                x_coefs = np.polyfit(vizzy_x_arr, opto_x_arr, 1)
+
+                px = np.poly1d(x_coefs)
+                xp = np.linspace(-3, 3, 100)
+
+                _ = plt.plot(vizzy_x_arr, opto_x_arr, '.', xp, px(xp), '-')
+
+                plt.show()
 
 
 
