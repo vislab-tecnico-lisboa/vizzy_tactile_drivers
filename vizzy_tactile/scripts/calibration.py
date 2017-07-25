@@ -48,9 +48,9 @@ def callback(optoforce_msg, vizzy_tactsensarray_msg):
         optoy.append(optoforce_msg.wrench.force.y)
         optoz.append(optoforce_msg.wrench.force.z)
 
-        vizzy_x.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.x)
-        vizzy_y.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.y)
-        vizzy_z.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.z)
+        vizzy_x.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].displacement.x)
+        vizzy_y.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].displacement.y)
+        vizzy_z.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].displacement.z)
 
         print vizzy_x, vizzy_y, vizzy_z
 
@@ -142,8 +142,15 @@ def calib():
             vizzy_z = []
 
             print "Getting data for sensor [%d]: " % sensorToCalib, fullList[sensorToCalib].frame_id
-            print "When you think there is enough data press [enter]"
             state = "getdata"
+            text = raw_input("When you think there is enough data press [enter]")
+            if text == "":
+                state = "fit_data"
+            else:
+                print "dafuq are you doing?"
+
+
+
 
         rate.sleep()
 
