@@ -52,7 +52,7 @@ def callback(optoforce_msg, vizzy_tactsensarray_msg):
         vizzy_y.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.y)
         vizzy_z.append(vizzy_tactsensarray_msg.sensorArray[sensorToCalib].force.z)
 
-        print "getting data"
+        print vizzy_x, vizzy_y, vizzy_z
 
 
 def printAllSensors():
@@ -121,15 +121,15 @@ def calib():
             try:
                 sensorToCalib=int(raw_input("Which sensor do you want to calibrate? (Insert the number of sensor on the full list): "))
 
-                if sensorToCalib > len(fullList):
+                if sensorToCalib > len(fullList)-1:
                     raise IndexError
 
             except ValueError:
-                print "lol... that's not a number"
+                print "lol... that's not a number. Try again"
                 continue
 
             except IndexError:
-                print "The number is not on the list"
+                print "The number is not on the list. Try again"
                 continue
 
 
