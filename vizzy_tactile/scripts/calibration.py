@@ -11,9 +11,6 @@ import re
 import numpy as np
 
 
-#TEMP
-from std_msgs.msg import String
-
 global calibratedList
 global uncalibratedList
 global numSensors
@@ -26,6 +23,7 @@ global resultsMat
 
 #DEFINE
 MAX_ID = 16
+
 
 def callback(optoforce_msg, vizzy_tactsensarray_msg):
 
@@ -151,7 +149,7 @@ def calib():
             if text == "":
                 state = "fit_data"
             else:
-                print "dafuq are you doing?"
+                print "Why write?... Just press [enter]"
 
             if state == "fit_data":
 
@@ -193,8 +191,15 @@ def calib():
                     print "\n \n Very well. Let's move on..."
                     calibratedList.append(fullList[sensorToCalib])
                     uncalibratedList.remove(fullList[sensorToCalib])
-                    state = "chooseSensor"
+                    state = "wantMore"
                     plt.close(f)
+
+                    print "Writing calibration file"
+                    outfile = file("newCalibration.txt", 'w')
+
+                    np.savetxt(outfile, resultsMat, fmt='%-7.4f')
+
+                    outfile.close()
 
                     idx = int(re.search(r'\d+', fullList[sensorToCalib].frame_id).group())
                     print "idx: ", idx
@@ -207,7 +212,7 @@ def calib():
                     resultsMat[idx-1][5] = z_coefs[1]
                     resultsMat[idx-1][6] = z_coefs[2]
 
-                    print resultsMat
+
 
                 else:
                     raw_input("Ok, let's do it again. Press [enter] when ready to start")
@@ -233,7 +238,9 @@ def calib():
     print "Writing calibration file"
     outfile = file("newCalibration.txt", 'w')
 
-    np.savetxt(outfile, resultsMat, fmt='%-7.4f')
+    np.savetxt(outfile, resultsMat, fmt='%-7.6f')
+
+    outfile.close()
 
     print "Done. Bye."
 
