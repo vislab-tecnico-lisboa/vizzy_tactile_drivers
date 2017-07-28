@@ -20,6 +20,8 @@ global fullList
 global optox, optoy, optoz
 global vizzy_x, vizzy_y, vizzy_z
 global resultsMat
+global computations
+
 
 #DEFINE
 MAX_ID = 16
@@ -92,6 +94,8 @@ def calib():
     global uncalibratedList
     global optox, optoy, optoz
     global vizzy_x, vizzy_y, vizzy_z
+    global computations
+    computations = False
 
     sensorToCalib = -1
 
@@ -143,47 +147,52 @@ def calib():
             vizzy_y = []
             vizzy_z = []
 
-            print "Getting data for sensor [%d]: " % sensorToCalib, fullList[sensorToCalib].frame_id
-            state = "getdata"
-            text = raw_input("When you think there is enough data press [enter]")
-            if text == "":
-                state = "fit_data"
-            else:
-                print "Why write?... Just press [enter]"
+            global computations
 
-            if state == "fit_data":
+            if not computations:
+                print "Getting data for sensor [%d]: " % sensorToCalib, fullList[sensorToCalib].frame_id
+                state = "getdata"
+                text = raw_input("When you think there is enough data press [enter]")
+                if text == "":
+                    state = "fit_data"
+                else:
+                    print "Why write?... Just press [enter]"
 
-                opto_x_arr = np.array(optox)
-                opto_y_arr = np.array(optoy)
-                opto_z_arr = np.array(optoz)
+                if state == "fit_data":
 
-                vizzy_x_arr = np.array(vizzy_x)
-                vizzy_y_arr = np.array(vizzy_y)
-                vizzy_z_arr = np.array(vizzy_z)
+                    opto_x_arr = np.array(optox)
+                    opto_y_arr = np.array(optoy)
+                    opto_z_arr = np.array(optoz)
 
-                x_coefs = np.polyfit(vizzy_x_arr, opto_x_arr, 1)
-                y_coefs = np.polyfit(vizzy_y_arr, opto_y_arr, 1)
-                z_coefs = np.polyfit(vizzy_z_arr, opto_z_arr, 2)
+                    vizzy_x_arr = np.array(vizzy_x)
+                    vizzy_y_arr = np.array(vizzy_y)
+                    vizzy_z_arr = np.array(vizzy_z)
 
-                px = np.poly1d(x_coefs)
-                py = np.poly1d(y_coefs)
-                pz = np.poly1d(z_coefs)
+                    x_coefs = np.polyfit(vizzy_x_arr, opto_x_arr, 1)
+                    y_coefs = np.polyfit(vizzy_y_arr, opto_y_arr, 1)
+                    z_coefs = np.polyfit(vizzy_z_arr, opto_z_arr, 2)
 
-                xp = np.linspace(-3, 3, 100)
-                yp = np.linspace(-3, 3, 100)
-                zp = np.linspace(0, 4, 100)
+                    px = np.poly1d(x_coefs)
+                    py = np.poly1d(y_coefs)
+                    pz = np.poly1d(z_coefs)
 
-                f, (ax1, ax2, ax3) = plt.subplots(3)
+                    xp = np.linspace(-3, 3, 100)
+                    yp = np.linspace(-3, 3, 100)
+                    zp = np.linspace(0, 4, 100)
 
-                ax1.plot(vizzy_x_arr, opto_x_arr, '.', xp, px(xp), '-')
-                ax2.plot(vizzy_y_arr, opto_y_arr, '.', yp, py(yp), '-')
-                ax3.plot(vizzy_z_arr, opto_z_arr, '.', zp, pz(zp), '-')
+                    f, (ax1, ax2, ax3) = plt.subplots(3)
 
-                ax1.set_title("x")
-                ax2.set_title("y")
-                ax3.set_title("z")
+                    ax1.plot(vizzy_x_arr, opto_x_arr, '.', xp, px(xp), '-')
+                    ax2.plot(vizzy_y_arr, opto_y_arr, '.', yp, py(yp), '-')
+                    ax3.plot(vizzy_z_arr, opto_z_arr, '.', zp, pz(zp), '-')
 
-                plt.show()
+                    ax1.set_title("x")
+                    ax2.set_title("y")
+                    ax3.set_title("z")
+
+                    plt.show()
+
+                    computations = True
 
                 cmd = raw_input("Is this calibration ok? [Y/n]")
 
@@ -212,11 +221,12 @@ def calib():
                     resultsMat[idx-1][5] = z_coefs[1]
                     resultsMat[idx-1][6] = z_coefs[2]
 
+                    computations = False
 
-
-                else:
+                elif cmd == "N" or cmd == "n":
                     raw_input("Ok, let's do it again. Press [enter] when ready to start")
                     plt.close(f)
+                    computations = False
                     optox = []
                     optoy = []
                     optoz = []
@@ -232,7 +242,8 @@ def calib():
                         state = "fit_data"
                     else:
                         print "Press [enter] when there is enough data, don't write random stuff"
-
+                else:
+                    print "Say Y or n, pls..."
         rate.sleep()
 
     print "Writing calibration file"
