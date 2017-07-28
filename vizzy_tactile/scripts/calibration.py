@@ -173,9 +173,9 @@ def calib():
                 py = np.poly1d(y_coefs)
                 pz = np.poly1d(z_coefs)
 
-                xp = np.linspace(-3, 3, 100)
-                yp = np.linspace(-3, 3, 100)
-                zp = np.linspace(0, 4, 100)
+                xp = np.linspace(-2, 2, 100)
+                yp = np.linspace(-2, 2, 100)
+                zp = np.linspace(0, 3, 100)
 
                 f, (ax1, ax2, ax3) = plt.subplots(3)
 
@@ -234,7 +234,7 @@ def calib():
 
     outfile = file("newCalibration.txt", 'w')
 
-    np.savetxt(outfile, resultsMat, fmt='%-7.2f')
+    np.savetxt(outfile, resultsMat, fmt='%-7.6f')
 
 if __name__ == '__main__':
     try:

@@ -15,6 +15,10 @@
 <param name="robot_description" command="$(find xacro)/xacro '$(find vizzy_tactile)/urdf/draft_tactile.xacro' sensor_frame_id:=$(arg sensor_frame_id)" />
 <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
+<group if="calib">
+   <include file="$(find vizzy_tactile)/launch/optoforce.launch"/>
+</group>
+
 <!--
 <node name="tactDriverLeftHand" pkg="vizzy_tactile" type="serial_node.py" output="screen" args="$(arg deviceLeft)">
 <param name="baud" type="str" value="$(arg baudrate)" />
@@ -23,6 +27,7 @@
 
 <node name="tactComputerRightHand" pkg="vizzy_tactile" type="tactileComputationalNode" output="screen">
 <param name="hand" type="str" value="right" />
+<param name="calib" type="bool" value="$(arg calib)" />
 <remap from="/tactile" to="/tactile_driver_right"/>
 </node>
 
