@@ -227,8 +227,8 @@ def calib():
 
                 print "Getting data for sensor [%d]: " % sensorToCalib, fullList[sensorToCalib].frame_id
                 state = "getdata"
-                text = raw_input("When you think there is enough data press [enter]")
-	    			state = "fit_data"
+                raw_input("When you think there is enough data press [enter]")
+                state = "fit_data"
 
         rate.sleep()
 
