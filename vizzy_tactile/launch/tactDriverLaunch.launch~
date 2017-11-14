@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <launch>
-<arg name="deviceRight" default="/dev/ttyUSB1" />
-<arg name="deviceLeft" default="/dev/ttyUSB2" />
+<arg name="deviceRight" default="/dev/ttyACM0" />
+<arg name="deviceLeft" default="/dev/ttyUSB1" />
 <arg name="calib" default="false" />
 <arg name="baudrate" default="115200"/>
 
@@ -15,8 +15,8 @@
 <param name="robot_description" command="$(find xacro)/xacro '$(find vizzy_tactile)/urdf/draft_tactile.xacro' sensor_frame_id:=$(arg sensor_frame_id)" />
 <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
-<group if="calib">
-   <include file="$(find vizzy_tactile)/launch/optoforce.launch"/>
+<group if="$(arg calib)">
+   <include file="$(find vizzy_tactile)/launch/optoforce.launch"/> 
 </group>
 
 <!--

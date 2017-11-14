@@ -191,7 +191,7 @@ def calib():
                 print "\n \n Very well. Let's move on..."
                 calibratedList.append(fullList[sensorToCalib])
                 uncalibratedList.remove(fullList[sensorToCalib])
-                state = "wantMore"
+                state = "chooseSensor"
                 plt.close(f)
 
                 print "Writing calibration file"
