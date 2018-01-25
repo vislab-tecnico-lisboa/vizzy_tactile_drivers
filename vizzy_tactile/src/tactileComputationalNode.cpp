@@ -16,16 +16,17 @@
 #include <stdlib.h>
 
 ros::Publisher pub;
+ros::Publisher pubCalibration;
 ros::Subscriber sub;
 ros::Publisher marker_pub;
 
 std::string hand;
-
+bool calib;
 
 double Bxx[121][121][81]; //BvsD files
 double Byy[121][121][81];
 double Bzz[121][121][81];
-double c[8][16]; //Mudar isto
+double c[16][8]; //Mudar isto
 
 int offset_z=2;
 
@@ -38,6 +39,8 @@ public:
   float pos_x0;
   float pos_y0;
   float pos_z0;
+
+  float dx, dy, dz;    // Position [mm] // Magnet displacements [mm]
 
   float Fx, Fy, Fz;             // Force [N]
 
@@ -53,9 +56,7 @@ public:
   {
 
     float Bx,By,Bz;               // Magnetic Field [Oe]
-    float pos_x, pos_y, pos_z;    // Magnet Position Relative to the Sensor [mm]
-
-    float dx, dy, dz;             // Magnet displacements [mm]
+    float pos_x, pos_y, pos_z;    // Magnet Position Relative to the Sensor [mm]        
 
     double errorB_temp, errorB=21.5;
     int k_2,j_2,i_2;
@@ -124,7 +125,10 @@ public:
       }
     }
     pos_x = (double)le_x*0.05-3; pos_y = (float)le_y*0.05-3; pos_z = (float)le_z*0.05;
+<<<<<<< HEAD
 
+=======
+>>>>>>> daa1753284418876de620d8436569b14ea6f9408
     if(le_x<=0) le_x=1;
     if(le_x>=120) le_x=120-1;
     if(le_y<=0) le_y=1;
@@ -132,6 +136,8 @@ public:
     if(le_z<=0) le_z=1;
     if(le_z>=80) le_z=80-1;
     // Last step to position
+
+
     double factorx, factory, factorz;
     // -- X
     if (fabs(Bxx[le_x+1][le_y][le_z]-Bx)< fabs(Bxx[le_x-1][le_y][le_z]-Bx)){
@@ -160,7 +166,6 @@ public:
       factorz = fabs(Bz-Bzz[le_x][le_y][le_z])/fabs(Bzz[le_x][le_y][le_z-1]-Bzz[le_x][le_y][le_z]);
       pos_z = pos_z - factorz*0.05 + offset_z;
     }
-
 
 
     if(countMeasures < 2)
@@ -279,8 +284,8 @@ void ReadCalibFiles(){
   {
     // exit;
   }
-  for(i=0;i<8;i++){
-    for(j=0;j<16;j++){
+  for(i=0;i<16;i++){
+    for(j=0;j<8;j++){
       if(fscanf(fpc, "%f", &num) != 1)
         exit(-1);
       c[i][j] = num;
@@ -294,6 +299,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 {
 
   vizzy_tactile::TactSensorArray outmsg;
+  vizzy_tactile::TactSensorArray calibmsg;
 
   std::stringstream aux;
 
@@ -305,6 +311,7 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
   {
 
     double Fx, Fy, Fz;
+    double dx, dy, dz;
 
     //Check if we have that sensor id in the sensorList, if not create it
 
@@ -322,6 +329,10 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
         Fy = sensItem.Fy;
         Fz = sensItem.Fz;
 
+        dx = sensItem.dx;
+        dy = sensItem.dy;
+        dz = sensItem.dz;
+
         exists = true;
         break;
       }
@@ -335,6 +346,10 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
       Fx = novoSensor.Fx;
       Fy = novoSensor.Fy;
       Fz = novoSensor.Fz;
+
+      dx = novoSensor.dx;
+      dy = novoSensor.dy;
+      dz = novoSensor.dz;
       sensorList.push_back(novoSensor);
     }
 
@@ -349,6 +364,11 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     marker.ns = aux.str();
     marker.header.stamp = ros::Time::now();
 
+    if(calib)
+      calibmsg.header.stamp = marker.header.stamp;
+    else
+      outmsg.header.stamp = marker.header.stamp;
+
     marker.type = visualization_msgs::Marker::ARROW;
 
     std::stringstream ss;
@@ -358,13 +378,28 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
     vizzy_tactile::TactSensor sensorMSG;
 
+    if(calib)
+    {
+      sensorMSG.frame_id = ss.str();
+      sensorMSG.force.x = -1;
+      sensorMSG.force.y = -1;
+      sensorMSG.force.z = -1;
+      sensorMSG.displacement.x = dx;
+      sensorMSG.displacement.y = dy;
+      sensorMSG.displacement.z = dz;
 
-    sensorMSG.frame_id = ss.str();
-    sensorMSG.force.x = Fx;
-    sensorMSG.force.y = Fy;
-    sensorMSG.force.z = Fz;
+      calibmsg.sensorArray.push_back(sensorMSG);
+    }else
+    {
+      sensorMSG.frame_id = ss.str();
+      sensorMSG.force.x = Fx;
+      sensorMSG.force.y = Fy;
+      sensorMSG.force.z = Fz;
+      outmsg.sensorArray.push_back(sensorMSG);
+    }
 
-    outmsg.sensorArray.push_back(sensorMSG);
+
+
     //outmsg.sensorArray[i].frame_id = ss.str();
 
 
@@ -409,12 +444,14 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
     //Vector magnitude
 
     //marker.scale.z = sqrt(outmsg.sensorArray[i].force.x*outmsg.sensorArray[i].force.x+outmsg.sensorArray[i].force.y*outmsg.sensorArray[i].force.y+outmsg.sensorArray[i].force.z*outmsg.sensorArray[i].force.z);
-
-    marker_pub.publish(marker);
+    if(!calib)
+      marker_pub.publish(marker);
   }
 
-
-    pub.publish(outmsg);
+    if(calib)
+      pubCalibration.publish(calibmsg);
+    else
+      pub.publish(outmsg);
 }
 
 
@@ -429,14 +466,23 @@ int main(int argc, char **argv)
   //ros::ServiceServer service = n.advertiseService("setNumberOfSensors", add);
 
   sub = nh.subscribe("/tactile", 1000, subscriberCallback);
-  pub = nh.advertise<vizzy_tactile::TactSensorArray>("tactileForceField", 1000);
+
   marker_pub = nh.advertise<visualization_msgs::Marker>("tactileForceMarker", 1000);
 
-  ROS_ERROR_STREAM("Going to read files");
+  ROS_INFO_STREAM("Going to read files");
   ReadCalibFiles();
-  ROS_ERROR_STREAM("Files read");
+  ROS_INFO_STREAM("Files read");
 
   nPriv.param<std::string>("hand", hand, "right");
+  nPriv.param<bool>("calib", calib, false);
+
+  ROS_ERROR_STREAM("calib: " << calib);
+
+  if(calib)
+    pubCalibration = nh.advertise<vizzy_tactile::TactSensorArray>("calibDisplace", 1000);
+  else
+    pub = nh.advertise<vizzy_tactile::TactSensorArray>("tactileForceField", 1000);
+
 
 
   ros::spin();
