@@ -68,12 +68,6 @@ public:
     Bz = fabs(z*0.294*0.01);
 
 
-    //Stuff de sensores
-
-
-
-
-
     //Convert to Displacements
 
     // Conditions to use??
@@ -131,12 +125,12 @@ public:
     }
     pos_x = (double)le_x*0.05-3; pos_y = (float)le_y*0.05-3; pos_z = (float)le_z*0.05;
 
-    if(le_x==0) le_x=1;
-    if(le_x==300) le_x=299;
-    if(le_y==0) le_y=1;
-    if(le_y==300) le_y=299;
-    if(le_z==0) le_z=1;
-    if(le_z==200) le_z=199;
+    if(le_x<=0) le_x=1;
+    if(le_x>=120) le_x=120-1;
+    if(le_y<=0) le_y=1;
+    if(le_y>=120) le_y=120-1;
+    if(le_z<=0) le_z=1;
+    if(le_z>=80) le_z=80-1;
     // Last step to position
     double factorx, factory, factorz;
     // -- X
