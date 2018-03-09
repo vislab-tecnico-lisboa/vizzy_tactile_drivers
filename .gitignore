@@ -1,3 +1,4 @@
 *~
 *.pyc
 vizzy_tactile/nodes/*.pyc
+vizzy_tactile/scripts/*.pyc
