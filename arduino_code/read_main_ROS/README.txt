@@ -1,19 +1,13 @@
-Version of Arduino IDE 1.8.2 min needed!!!!
+read_main_ROS.ino 
 
-Main file to read from the mlx90393 sensors placed on Vizzy.
-
-Choose any combination between the 16 sensors (in one hand),
-by changing the SensorActive variable in the file. 
-
-Ex: SensorActive[16] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; -> all sensors active
-SensorActive[16] = {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; -> Only sensor nº 1 active
+Main file to read with ROS from the mlx90393 sensors 
+using vizzy_tactile_driver.
 
 See "VizzyTactileSensors_Scheme.pdf" for the sensor numbers. 
-
 
 
 -----------------
 
 Tiago Paulino
 
-April 2017
+July 2017

@@ -125,6 +125,10 @@ public:
       }
     }
     pos_x = (double)le_x*0.05-3; pos_y = (float)le_y*0.05-3; pos_z = (float)le_z*0.05;
+<<<<<<< HEAD
+
+=======
+>>>>>>> daa1753284418876de620d8436569b14ea6f9408
     if(le_x<=0) le_x=1;
     if(le_x>=120) le_x=120-1;
     if(le_y<=0) le_y=1;
