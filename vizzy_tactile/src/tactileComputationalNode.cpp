@@ -40,6 +40,8 @@ public:
   float pos_y0;
   float pos_z0;
 
+  float Bx, By, Bz;
+
   float dx, dy, dz;    // Position [mm] // Magnet displacements [mm]
 
   float Fx, Fy, Fz;             // Force [N]
@@ -55,7 +57,7 @@ public:
   bool computeForce(double x, double y, double z)
   {
 
-    float Bx,By,Bz;               // Magnetic Field [Oe]
+    //float Bx,By,Bz;               // Magnetic Field [Oe]
     float pos_x, pos_y, pos_z;    // Magnet Position Relative to the Sensor [mm]        
 
     double errorB_temp, errorB=21.5;
@@ -125,7 +127,7 @@ public:
       }
     }
     pos_x = (double)le_x*0.05-3; pos_y = (float)le_y*0.05-3; pos_z = (float)le_z*0.05;
-
+    
     if(le_x<=0) le_x=1;
     if(le_x>=120) le_x=120-1;
     if(le_y<=0) le_y=1;
@@ -191,10 +193,14 @@ public:
 
     //Convert to Force - different for each sensor.
 
-    Fx=dx*c[id-1][0]+c[id-1][1]*dz;
-    Fy=dy*c[id-1][2]+c[id-1][3]*dz;
-    Fz=(c[id-1][4]*dz*dz+c[id-1][5]*fabs(dz))*(1-dy*dy*c[id-1][6])*(1-dx*dx*c[id-1][7]);
+    //Fx=dx*c[id-1][0]+c[id-1][1]*dz;
+    //Fy=dy*c[id-1][2]+c[id-1][3]*dz;
+    //Fz=(c[id-1][4]*dz*dz+c[id-1][5]*fabs(dz))*(1-dy*dy*c[id-1][6])*(1-dx*dx*c[id-1][7]);
 
+    // with the new calibration the function is the polinomial
+    Fx=dx*c[id-1][0];
+    Fy=dy*c[id-1][2];
+    Fz=(c[id-1][4]*dz*dz+c[id-1][5]*fabs(dz));
     return true;
   }
 
@@ -275,7 +281,7 @@ void ReadCalibFiles(){
   fclose(fpz);
   // -- force
   std::stringstream ssc;
-  ssc << basepath.str() << "/calib_files/cc.txt";
+  ssc << basepath.str() << "/calib_files/cc_poly.txt";
   FILE *fpc = fopen(ssc.str().c_str(), "r");
   if (fpc == NULL) //checks for the file
   {
@@ -306,10 +312,10 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
 
   for(auto &sensor: msg->sensorsArray)
   {
-
+    
     double Fx, Fy, Fz;
     double dx, dy, dz;
-
+	  double Bx, By, Bz;
     //Check if we have that sensor id in the sensorList, if not create it
 
     bool exists = false;
@@ -330,6 +336,10 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
         dy = sensItem.dy;
         dz = sensItem.dz;
 
+        Bx = sensItem.Bx;
+        By = sensItem.By;
+        Bz = sensItem.Bz;
+
         exists = true;
         break;
       }
@@ -347,15 +357,15 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
       dx = novoSensor.dx;
       dy = novoSensor.dy;
       dz = novoSensor.dz;
+
+      Bx = novoSensor.Bx;
+      By = novoSensor.By;
+      Bz = novoSensor.Bz;
       sensorList.push_back(novoSensor);
     }
 
-
-
-
     if(!preCalibrationMade)
       continue;
-
 
     visualization_msgs::Marker marker;
     marker.ns = aux.str();
@@ -392,6 +402,12 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
       sensorMSG.force.x = Fx;
       sensorMSG.force.y = Fy;
       sensorMSG.force.z = Fz;
+      sensorMSG.displacement.x = dx;
+      sensorMSG.displacement.y = dy;
+      sensorMSG.displacement.z = dz;
+	    //sensorMSG.field.x = Bx;
+      //sensorMSG.field.y = By;
+      //sensorMSG.field.z = Bz;
       outmsg.sensorArray.push_back(sensorMSG);
     }
 
