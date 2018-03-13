@@ -405,9 +405,9 @@ void subscriberCallback(const vizzy_tactile::Tactile::ConstPtr& msg)
       sensorMSG.displacement.x = dx;
       sensorMSG.displacement.y = dy;
       sensorMSG.displacement.z = dz;
-	    //sensorMSG.field.x = Bx;
-      //sensorMSG.field.y = By;
-      //sensorMSG.field.z = Bz;
+	    sensorMSG.field.x = Bx;
+      sensorMSG.field.y = By;
+      sensorMSG.field.z = Bz;
       outmsg.sensorArray.push_back(sensorMSG);
     }
 

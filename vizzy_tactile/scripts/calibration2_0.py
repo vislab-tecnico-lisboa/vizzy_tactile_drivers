@@ -48,7 +48,6 @@ class Calibrator():
         self.MAX_ID = int(rospy.get_param('~max_sensor_number', '16'))
 
         self.numSensors = -1
-        self.sensorToCalib = -1
         self.optox = []
         self.optoy = []
         self.optoz = []
@@ -111,9 +110,9 @@ class Calibrator():
             self.optoy.append(optoforce_msg.wrench.force.y)
             self.optoz.append(optoforce_msg.wrench.force.z)
 
-            self.vizzy_x.append(vizzy_tactsensarray_msg.sensorArray[self.sensorToCalib].displacement.x)
-            self.vizzy_y.append(vizzy_tactsensarray_msg.sensorArray[self.sensorToCalib].displacement.y)
-            self.vizzy_z.append(abs(vizzy_tactsensarray_msg.sensorArray[self.sensorToCalib].displacement.z))
+            self.vizzy_x.append(vizzy_tactsensarray_msg.sensorArray[self.sm.selectionFromList].displacement.x)
+            self.vizzy_y.append(vizzy_tactsensarray_msg.sensorArray[self.sm.selectionFromList].displacement.y)
+            self.vizzy_z.append(abs(vizzy_tactsensarray_msg.sensorArray[self.sm.selectionFromList].displacement.z))
         else:
             self.optox = []
             self.optoy = []
@@ -312,9 +311,16 @@ class StateMachine():
         
         ## GETTING_DATA - Get data to process
         if self._state == self._GETTING_DATA:
-            self.interface.write_line(7, self.interface.CENTER, '### Getting data ### \n' \
+            self.interface.write_line(2, self.interface.CENTER, '### Getting data ### \n' \
              + 'Gathered %s points...' % len(self._calibrator.vizzy_x))
 
+            if len(self._calibrator.vizzy_x)-1 > 0:
+                self.interface.write_line(5, self.interface.CENTER, '### Vizzy sensor reading ### \n' \
+                 + 'x: %s \n y: %s \n z: %s ' % (self._calibrator.vizzy_x[len(self._calibrator.vizzy_x)-1], self._calibrator.vizzy_y[len(self._calibrator.vizzy_y)-1], self._calibrator.vizzy_z[len(self._calibrator.vizzy_z)-1]))
+
+              #  self.interface.write_line(9, self.interface.CENTER, '### Optoforce sensor reading ### \n' \
+              #   + 'x: %s \n y: %s \n z: %s ' % (self._calibrator.optox[len(self._calibrator.optox)-1], self._calibrator.optoy[len(self._calibrator.optox)-1], self._calibrator.optoz[len(self._calibrator.optox)-1]))
+            
             self.interface.write_line(self.interface._num_lines-1, 0, \
             'Press: Enter - Complete Calibration | c - Cancel', \
             self.interface.HIGHLIGH, True)
