@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2018 Institute for Systems and Robotics - Lisboa.
 #
-# 
+#
 # Authors:
 #   * Joao Avelino
 
@@ -18,11 +18,6 @@ from geometry_msgs.msg import WrenchStamped
 import matplotlib.animation as animation
 import matplotlib
 import imp
-try:
-    imp.find_module('PyQt4')
-    matplotlib.use('QT4Agg')
-except:
-    matplotlib.use('QT5Agg')
 
 from matplotlib import pyplot as plt
 
@@ -39,10 +34,9 @@ class TactileListener:
         rospy.Subscriber("tactileForceField", TactSensorArray, self.listenerCallback)
 
         self.readings = np.array([0]*11)
-        print("lol")
 
     def listenerCallback(self, vizzy_tactsensarray_msg):
-        
+
         readx = []
         ready = []
         readz = []
@@ -55,14 +49,15 @@ class TactileListener:
             readz.append(x.force.z)
             v = np.array([x.force.x, x.force.y, x.force.z])
 
-            magnitude.append(v)
+            magnitude.append(np.linalg.norm(v))
 
         readx_np = np.array(readx)
         ready_np = np.array(ready)
         readz_np = np.array(readz)
 
-        self.readings = magnitude
+        magnitude_np = np.array(magnitude)
 
+        self.readings = readz_np
 
 
 class ForcePlotter:
@@ -70,19 +65,21 @@ class ForcePlotter:
 
         self.tactlist = TactileListener()
 
-        sensor_numbers = np.array([x for x in xrange(1, 12)])
-        readings = np.array([0]*11)
+        self.sensor_numbers = np.array([x for x in xrange(0, 11)])
+        self.readings = np.array([0]*11)
         self.fig, self.ax = plt.subplots()
 
-        self.scat = self.ax.scatter(sensor_numbers, readings)
+        self.ax.set_ylim(-1.0, 9)
+        self.ax.set_xlim(-1.0,12)
+        self.scat = self.ax.scatter(self.sensor_numbers, self.readings)
+
 
     def init(self):
-        
-        self.scat.set_array([])
+        self.scat.set_offsets(np.vstack([self.sensor_numbers, self.readings]).transpose())
         return self.scat,
 
     def animate(self, i):
-        self.scat.set_array(self.tactlist.readings)
+        self.scat.set_offsets(np.vstack([self.sensor_numbers, self.tactlist.readings]).transpose())
         return self.scat,
 
 

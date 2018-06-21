@@ -198,9 +198,9 @@ public:
     //Fz=(c[id-1][4]*dz*dz+c[id-1][5]*fabs(dz))*(1-dy*dy*c[id-1][6])*(1-dx*dx*c[id-1][7]);
 
     // with the new calibration the function is the polinomial
-    Fx=dx*c[id-1][0];
-    Fy=dy*c[id-1][2];
-    Fz=(c[id-1][4]*dz*dz+c[id-1][5]*fabs(dz));
+    Fx=dx*c[id-1][0]+c[id-1][1];
+    Fy=dy*c[id-1][2]+c[id-1][3];
+    Fz=(c[id-1][4]*dz*dz+c[id-1][5]*fabs(dz)+c[id-1][6]);
     return true;
   }
 
