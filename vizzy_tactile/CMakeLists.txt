@@ -140,11 +140,13 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}") #Default build mode is release
 add_executable(vizzy_tactile_driver src/vizzy_tactile.cpp)
 target_link_libraries(vizzy_tactile_driver ${catkin_LIBRARIES})
 
-
 add_executable(tactileComputationalNode src/tactileComputationalNode.cpp)
 target_link_libraries(tactileComputationalNode ${catkin_LIBRARIES})
 add_dependencies(tactileComputationalNode vizzy_tactile_generate_messages_cpp)
 
+add_executable(forcesCalculation src/forces_calculation.cpp)
+target_link_libraries(forcesCalculation ${catkin_LIBRARIES})
+add_dependencies(forcesCalculation vizzy_tactile_generate_messages_cpp)
 
 
 #############
