@@ -1,5 +1,3 @@
-/* Rita Pagaimo, Vislab-Lisboa 2022
-Instituto Superior Tecnico, Portugal */
 
 #include "ros/ros.h"
 #include "vizzy_tactile/TacVector.h"
@@ -47,10 +45,14 @@ class SensorComputer
 
         void callback(const vizzy_tactile::Tactile::ConstPtr& msg)
         {
+
             
                 if(!is_calib)
                  {
                     for(auto &sensor_msg: msg->sensorsArray){
+                        
+                        std::cout << sensor_msg << std::endl;
+
                         Sensor s;
                         s.id = sensor_msg.id;
                         s.type = sensor_msg.type;
@@ -74,7 +76,9 @@ class SensorComputer
                             s.val_in = s.x;
                             s.b = 0.003944*s.val_in;
                             std::cout << "sensor 11 (14), b: " << s.b << std::endl;
-                            }
+                        }else{
+                                std::cout << "Sensor ignorado" << std::endl;
+                        }
 
                         sensor_array.push_back(s);
 
@@ -82,22 +86,33 @@ class SensorComputer
                 
                     is_calib = true;
                  }
+
                     
                 int idx = 0;
                 for(auto &sensor_msg: msg->sensorsArray){
 
                     if(sensor_array[idx].id == 8 && sensor_array[idx].type == 11){   //sensor 8   
                         sensor_array[idx].Fz = 0.005617*sensor_msg.y+sensor_array[idx].b;
+                        sensor_array[idx].Fx = 0;
+                        sensor_array[idx].Fy = 0;
                         std::cout << "sensor 8, Fz: " << sensor_array[idx].Fz << std::endl;
                     } else if(sensor_array[idx].id == 11 && sensor_array[idx].type == 11){ //sensor 11
                         sensor_array[idx].Fz = -0.009252*sensor_msg.x+sensor_array[idx].b;
+                        sensor_array[idx].Fx = 0;
+                        sensor_array[idx].Fy = 0;
                         std::cout << "sensor 11 (11), Fz: " << sensor_array[idx].Fz << std::endl;
                     } else if(sensor_array[idx].id == 10 && sensor_array[idx].type == 14){ //sensor 14
                         sensor_array[idx].Fz = 0.0005203*sensor_msg.x+sensor_array[idx].b;
+                        sensor_array[idx].Fx = 0;
+                        sensor_array[idx].Fy = 0;
                         std::cout << "sensor 10, Fz: " << sensor_array[idx].Fz << std::endl;
                     } else if (sensor_array[idx].id == 11 && sensor_array[idx].type == 14){
                         sensor_array[idx].Fz = -0.003944*sensor_msg.x+sensor_array[idx].b;
+                        sensor_array[idx].Fx = 0;
+                        sensor_array[idx].Fy = 0;
                         std::cout << "sensor 11 (14), Fz: " << sensor_array[idx].Fz << std::endl;
+                    }else{
+                        std::cout << "Sensor ignorado" << std::endl;
                     }
 
                     idx++;
@@ -109,6 +124,9 @@ class SensorComputer
                 for(auto &my_sensor: sensor_array)
                 {   
                     vizzy_tactile::TactSensor message;
+                    std::stringstream ss;
+                    ss <<  my_sensor.id << "_" << my_sensor.type;
+                    message.frame_id=ss.str();
                     message.force.z = my_sensor.Fz;
                     sensor_array_msg.sensorArray.push_back(message);
                 }
@@ -121,8 +139,9 @@ class SensorComputer
 
 int main(int argc, char **argv){
 
-    ros::NodeHandle nh;   
     ros::init(argc, argv, "forces_calculation");
+
+    ros::NodeHandle nh;   
 
     SensorComputer sc(nh);
 
