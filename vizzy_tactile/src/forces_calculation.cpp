@@ -108,11 +108,11 @@ class SensorComputer
                             s.b = -0.0001542*s.val_in;
                             std::cout << "sensor 6, b: " << s.b << std::endl;
                         } //Sensors channel 3: palm right
-                        else if (s.id == 12 && s.type == 11){
+                        else if ((s.id == 12 ||  s.id == 13)  && s.type == 11){
                             s.val_in = s.z;
                             s.b = 0.01831*s.val_in;
                             std::cout << "sensor 12 (11), b: " << s.b << std::endl;
-                        } else if (s.id == 12 && s.type == 14){
+                        } else if ((s.id == 12 || s.id == 15) && s.type == 14){
                             s.val_in = s.x;
                             s.b = 0.0633*s.val_in;
                             std::cout << "sensor 12 (14), b: " << s.b << std::endl;
@@ -156,6 +156,8 @@ class SensorComputer
                             std::cout << "sensor 23 (11), b: " << s.b << std::endl;
                         } else{
                                 std::cout << "Sensor ignorado" << std::endl;
+                                std::cout << "s.id" << s.id << std::endl;
+                                std::cout << "s.type" << s.type << std::endl;
                         }
                         
                         sensor_array.push_back(s);
@@ -229,12 +231,12 @@ class SensorComputer
                         sensor_array[idx].Fy = 0;
                         std::cout << "sensor 6, Fz: " << sensor_array[idx].Fz << std::endl;
                     } //Sensors channel 3: palm right 
-                    else if(sensor_array[idx].id == 12 && sensor_array[idx].type == 11){ //sensor 11
+                    else if((sensor_array[idx].id == 12 || sensor_array[idx].id ==13)&& sensor_array[idx].type == 11){ //sensor 11
                         sensor_array[idx].Fz = -0.01831*sensor_msg.z+sensor_array[idx].b;
                         sensor_array[idx].Fx = 0;
                         sensor_array[idx].Fy = 0;
                         std::cout << "sensor 12 (11), Fz: " << sensor_array[idx].Fz << std::endl;
-                    } else if(sensor_array[idx].id == 12 && sensor_array[idx].type == 14){ //sensor 14
+                    } else if((sensor_array[idx].id == 12 || sensor_array[idx].id == 15) && sensor_array[idx].type == 14){ //sensor 14
                         sensor_array[idx].Fz = -0.0633*sensor_msg.x+sensor_array[idx].b;
                         sensor_array[idx].Fx = 0;
                         sensor_array[idx].Fy = 0;
@@ -287,7 +289,10 @@ class SensorComputer
                         sensor_array[idx].Fy = 0;
                         std::cout << "sensor 23, Fz: " << sensor_array[idx].Fz << std::endl;
                     } else{
-                        std::cout << "Sensor ignorado" << std::endl;
+                        std::cout << "Sensor ignorado 2" << std::endl;
+                        std::cout << "id: " << sensor_array[idx].id << std::endl;
+                        std::cout << "type: " << sensor_array[idx].type << std::endl;
+
                     }
 
                     idx++;
